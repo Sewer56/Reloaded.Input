@@ -66,7 +66,7 @@ namespace Reloaded.Input.Implementations.DInput
                 if (deviceObject.ObjectId.Flags.HasAllFlags(DeviceObjectTypeFlags.AbsoluteAxis))
                     controller.GetObjectPropertiesById(deviceObject.ObjectId).Range = new InputRange((int) AxisSet.MinValue, (int) AxisSet.MaxValue);
 
-            return new DInputController(controller, $"DInput Controller {controllerIndex}");
+            return new DInputController(controller, $"DInput {controllerIndex}");
         }
 
         // Interface Implementation

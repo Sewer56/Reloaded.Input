@@ -44,7 +44,7 @@ namespace Reloaded.Input.Implementations.XInput
         }
 
         public string GetId() => GetFriendlyName();
-        public string GetFriendlyName() => $"XInput Controller {(int)Controller.UserIndex}";
+        public string GetFriendlyName() => $"XInput {(int)Controller.UserIndex}";
 
         private float ScaleAxis(float value) => (value / short.MaxValue) * AxisSet.MaxValue;
         private float ScaleTrigger(float value)

@@ -9,7 +9,7 @@
         Style="{DynamicResource ReloadedWindow}"
         Title="Reloaded.Input Configurator" 
         Height="400" 
-        Width="500">
+        Width="600">
     <ScrollViewer DataContext="{Binding ViewModel, RelativeSource={RelativeSource AncestorType=Window}}">
         <StackPanel>
             <ComboBox ItemsSource="{Binding Configurations}"
@@ -19,8 +19,8 @@
                       Margin="0,10,0,0"/>
             <Grid HorizontalAlignment="Stretch" Margin="0,10,0,10">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
@@ -34,8 +34,8 @@
                     <DataTemplate>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
