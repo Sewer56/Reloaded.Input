@@ -1,0 +1,13 @@
+﻿<Application x:Class="Reloaded.Input.Configurator.WPF.Configurator"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Reloaded.WPF.Controls;assembly=Reloaded.WPF">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- This dictionary switches locations between design and runtime -->
+                <controls:DesignTimeResourceDictionary RunTimeSource="pack://siteoforigin:,,,/Theme/Default/Root.xaml" DesignTimeSource="pack://application:,,,/Theme/Default/Root.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
