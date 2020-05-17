@@ -21,7 +21,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="120"/>
-                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="140"/>
                     <ColumnDefinition Width="110"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="Name" Grid.Column="0" HorizontalAlignment="Center" Style="{DynamicResource DefaultTextBlock}"/>
@@ -36,7 +36,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="120"/>
-                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="140"/>
                                 <ColumnDefinition Width="110"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="{Binding Name}" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" />
