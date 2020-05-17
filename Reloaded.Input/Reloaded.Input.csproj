@@ -11,7 +11,7 @@
     <PackageIcon>Preview.png</PackageIcon>
     <RepositoryUrl>https://github.com/Sewer56/Reloaded.Input.git</RepositoryUrl>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageLicenseExpression>LGPLV3</PackageLicenseExpression>
+    <PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
