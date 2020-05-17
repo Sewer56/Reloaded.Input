@@ -11,7 +11,6 @@ namespace Reloaded.Input.Configurator.Test
         [STAThread]
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
             var mappingEntries = new MappingEntry[]
             {
                 new MappingEntry("Jump", 0, MappingType.Button),
