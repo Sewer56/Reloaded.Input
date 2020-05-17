@@ -30,7 +30,13 @@ namespace Reloaded.Input.Structs
         /// Gets a friendly name for the mapping.
         /// </summary>
         /// <param name="controller"></param>
-        public string GetFriendlyName(IController controller) => $"{controller.GetFriendlyName()}/{Index}";
+        public string GetFriendlyName(IController controller)
+        {
+            if (MappingType == MappingType.Button)
+                return $"{controller.GetFriendlyName()}/B{Index}";
+
+            return $"{controller.GetFriendlyName()}/A{Index}";
+        }
 
         /// <summary>
         /// Gets the mapped value from the passed in controller instance.
