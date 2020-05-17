@@ -14,12 +14,12 @@ namespace Reloaded.Input.Configurator.Test
             Console.WriteLine("Hello World!");
             var mappingEntries = new MappingEntry[]
             {
-                new MappingEntry("Button A", 0, MappingType.Button),
-                new MappingEntry("Button B", 1, MappingType.Button),
-                new MappingEntry("Button C", 2, MappingType.Button),
+                new MappingEntry("Jump", 0, MappingType.Button),
+                new MappingEntry("Boost", 1, MappingType.Button),
+                new MappingEntry("Drift", 2, MappingType.Button),
 
-                new MappingEntry("Axis A", 3, MappingType.Axis),
-                new MappingEntry("Axis B", 4, MappingType.Axis),
+                new MappingEntry("Up/Down", 3, MappingType.Axis),
+                new MappingEntry("Left/Right", 4, MappingType.Axis),
             };
 
             var configurator = new WPF.Configurator();
