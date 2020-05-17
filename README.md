@@ -19,6 +19,7 @@ I created this library in 2 days for the sole purpose of writing input mods for 
 Basic usage of the library is as follows:
 
 **Instantiation**
+
 ```csharp
 // Create a controller which
 var Controller = new VirtualController("Controller.json");
@@ -27,11 +28,11 @@ var Controller = new VirtualController("Controller.json");
 This will automatically load any mappings from `Controller.json` if present.
 
 **Mapping Keys**
+
 You map a key through the use of the asynchronous function `Map()`.
 
 ```csharp
 // mappingIndex: Unique number (per controller) associated with the mapping.
-//				 This number is used to later retrieve input.
 // type: Axis or Button
 // callBackFunction: Executed after every input check during mapping.
 //					 This is where you cancel your token if needed.
