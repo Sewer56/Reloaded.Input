@@ -3,9 +3,16 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
-    <Description>Personal use.</Description>
+    <Description>Personal use controller remapping library that wraps XInput and DInput in a common interface.</Description>
     <Authors>Sewer56</Authors>
     <Product />
+    <Copyright>LGPLV3</Copyright>
+    <PackageProjectUrl>https://github.com/Sewer56/Reloaded.Input.git</PackageProjectUrl>
+    <PackageIcon>Preview.png</PackageIcon>
+    <RepositoryUrl>https://github.com/Sewer56/Reloaded.Input.git</RepositoryUrl>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>LGPLV3</PackageLicenseExpression>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -21,6 +28,13 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="SharpDX.DirectInput" Version="4.2.0" />
     <PackageReference Include="SharpDX.XInput" Version="4.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\Docs\Images\Preview.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
