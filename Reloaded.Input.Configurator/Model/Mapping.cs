@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using Reloaded.Input.Structs;
 using Reloaded.WPF.MVVM;
 
@@ -62,6 +63,12 @@ namespace Reloaded.Input.Configurator.Model
 
                 MapMeText = $"Time Left: {TimeToMap - stopWatch.ElapsedMilliseconds}";
             }
+        }
+
+        public void UnMap()
+        {
+            Source.UnMap(MappingIndex);
+            FriendlyName = Source.GetFriendlyMappingName(MappingIndex);
         }
     }
 }

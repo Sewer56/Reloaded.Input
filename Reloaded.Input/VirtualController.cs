@@ -76,6 +76,15 @@ namespace Reloaded.Input
         public void Save() => Mappings.SaveTo(FilePath);
 
         /// <summary>
+        /// Unmaps a mapping with a specified index.
+        /// </summary>
+        /// <param name="index">The index to unmap.</param>
+        public void UnMap(int index)
+        {
+            Mappings.Mappings.Remove(index);
+        }
+
+        /// <summary>
         /// Polls controllers for a change in inputs and maps a specified button. 
         /// </summary>
         /// <param name="index">Index of the mapping.</param>
