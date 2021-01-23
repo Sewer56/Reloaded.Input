@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using EnumsNET;
 using Reloaded.Input.Interfaces;
 using Reloaded.Input.Structs;
@@ -34,19 +35,7 @@ namespace Reloaded.Input.Implementations.DInput
             var controllers = new List<IController>(devices.Count);
 
             for (var x = 0; x < devices.Count; x++)
-            {
-                var device = devices[x];
-                switch (device.Type)
-                {
-                    // Filter devices to initialize by type.
-                    case DeviceType.Joystick:
-                    case DeviceType.Gamepad:
-                    case DeviceType.Keyboard:
-                    case DeviceType.Mouse:
-                        controllers.Add(AcquireController(device, x));
-                        break;
-                }
-            }
+                controllers.Add(AcquireController(devices[x], x));
 
             Controllers = controllers.ToArray();
         }
