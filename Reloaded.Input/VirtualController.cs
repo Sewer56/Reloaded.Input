@@ -13,7 +13,7 @@ namespace Reloaded.Input
     /// <summary>
     /// Represents an individual abstracted controller.
     /// </summary>
-    public class VirtualController
+    public class VirtualController : IDisposable
     {
         /// <summary>
         /// Called after the list of controllers is refreshed.
@@ -50,6 +50,16 @@ namespace Reloaded.Input
                 new DInputManager(this) 
             };
             Refresh();
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            foreach (var manager in Managers)
+            {
+                if (manager is IDisposable disposable)
+                    disposable.Dispose();
+            }
         }
 
         /// <summary>

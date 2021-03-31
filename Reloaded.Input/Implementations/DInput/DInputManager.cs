@@ -8,7 +8,7 @@ using SharpDX.DirectInput;
 
 namespace Reloaded.Input.Implementations.DInput
 {
-    public class DInputManager : IControllerManager
+    public class DInputManager : IControllerManager, IDisposable
     {
         public VirtualController VirtualController { get; private set; }
         public IController[] Controllers { get; private set; }
@@ -29,8 +29,17 @@ namespace Reloaded.Input.Implementations.DInput
             };
         }
 
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            DisposeControllers();
+            DirectInput?.Dispose();
+            Hotplugger?.Dispose();
+        }
+
         public void Refresh()
         {
+            DisposeControllers();
             var devices     = DirectInput.GetDevices(DeviceClass.All, DeviceEnumerationFlags.AttachedOnly);
             var controllers = new List<IController>(devices.Count);
 
@@ -61,5 +70,14 @@ namespace Reloaded.Input.Implementations.DInput
         // Interface Implementation
         public IController[] GetControllers() => Controllers;
         public VirtualController GetRemapper() => VirtualController;
+
+        private void DisposeControllers()
+        {
+            if (Controllers == null) 
+                return;
+
+            foreach (var controller in Controllers)
+                ((DInputController) controller).Dispose();
+        }
     }
 }

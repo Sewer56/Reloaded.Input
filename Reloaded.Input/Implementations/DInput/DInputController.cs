@@ -7,7 +7,7 @@ using SharpDX.DirectInput;
 
 namespace Reloaded.Input.Implementations.DInput
 {
-    public class DInputController : IController
+    public class DInputController : IController, IDisposable
     {
         public Joystick Joystick   { get; private set; }
         public string FriendlyName { get; private set; }
@@ -17,6 +17,9 @@ namespace Reloaded.Input.Implementations.DInput
             Joystick = controller;
             FriendlyName = friendlyName;
         }
+
+        /// <inheritdoc />
+        public void Dispose() => Joystick?.Dispose();
 
         /* Interface Implementation */
         public ButtonSet GetButtons()
