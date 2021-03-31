@@ -26,6 +26,7 @@ namespace Reloaded.Input.Implementations.DInput
         {
             try
             {
+                Joystick.Poll();
                 var buttonSet = new ButtonSet();
                 var state = Joystick.GetCurrentState();
 
@@ -42,7 +43,7 @@ namespace Reloaded.Input.Implementations.DInput
                 {
                     foreach (var direction in povDirections)
                     {
-                        buttonSet.SetButton(currentButtonIndex, povController == (int)direction.Value);
+                        buttonSet.SetButton(currentButtonIndex, povController == (int) direction.Value);
                         currentButtonIndex += 1;
                     }
                 }
@@ -50,6 +51,11 @@ namespace Reloaded.Input.Implementations.DInput
                 return buttonSet;
             }
             catch (SharpDXException e)
+            {
+                ExceptionHandler(e);
+                return new ButtonSet();
+            }
+            catch (Exception e)
             {
                 return new ButtonSet();
             }
@@ -59,6 +65,7 @@ namespace Reloaded.Input.Implementations.DInput
         {
             try
             {
+                Joystick.Poll();
                 var axisSet = new AxisSet();
                 var state = Joystick.GetCurrentState();
                 int currentButtonIndex = 0;
@@ -112,7 +119,21 @@ namespace Reloaded.Input.Implementations.DInput
             }
             catch (SharpDXException e)
             {
+                ExceptionHandler(e);
                 return new AxisSet();
+            }
+            catch (Exception e)
+            {
+                return new AxisSet();
+            }
+        }
+
+        private void ExceptionHandler(SharpDXException ex)
+        {
+            if (ex.ResultCode == ResultCode.NotAcquired || ex.ResultCode == ResultCode.InputLost)
+            {
+                try { Joystick.Acquire(); }
+                catch (Exception) { /* Ignored */ }
             }
         }
 

@@ -55,15 +55,14 @@ namespace Reloaded.Input.Implementations.DInput
             var controller = new Joystick(DirectInput, device.InstanceGuid);
             if (controller.Information.Type == DeviceType.Mouse)
                 controller.Properties.AxisMode = DeviceAxisMode.Relative;
-
-            // Acquire the DInput Device
-            controller.Acquire();
-
+            
             // Clamp axis to our values.
             foreach (var deviceObject in controller.GetObjects())
                 if (deviceObject.ObjectId.Flags.HasAllFlags(DeviceObjectTypeFlags.AbsoluteAxis))
                     controller.GetObjectPropertiesById(deviceObject.ObjectId).Range = new InputRange((int) AxisSet.MinValue, (int) AxisSet.MaxValue);
 
+            // Acquire the DInput Device
+            controller.Acquire();
             return new DInputController(controller, $"DInput {controllerIndex}");
         }
 
