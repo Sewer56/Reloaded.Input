@@ -16,10 +16,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="PropertyChanged.Fody" Version="3.2.8">
+    <PackageReference Include="PropertyChanged.Fody" Version="3.4.1">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Reloaded.WPF.Theme.Default" Version="3.0.0">
+    <PackageReference Include="Reloaded.WPF.Theme.Default" Version="3.0.8">
       <IncludeAssets>all</IncludeAssets>
       <PrivateAssets>analyzers;build</PrivateAssets>
     </PackageReference>
