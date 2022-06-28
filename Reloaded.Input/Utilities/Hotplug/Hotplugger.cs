@@ -1,7 +1,4 @@
-﻿using System;
-using System.Windows.Forms;
-
-namespace Reloaded.Input.Utilities.Hotplug;
+﻿namespace Reloaded.Input.Utilities.Hotplug;
 
 /// <summary/>
 public class Hotplugger : NativeWindow, IDisposable

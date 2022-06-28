@@ -1,5 +1,4 @@
 ﻿using Reloaded.Input.Interfaces;
-using System.Collections.Generic;
 using System.Text;
 
 namespace Reloaded.Input.Structs;

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Reloaded.Input.Interfaces;
+﻿using Reloaded.Input.Interfaces;
 using Reloaded.Input.Structs;
 using Reloaded.Input.Utilities.Hotplug;
 using Vortice.DirectInput;

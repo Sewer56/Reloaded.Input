@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using Reloaded.Input.Configurator.WPF;
 using Reloaded.Input.Structs;
 

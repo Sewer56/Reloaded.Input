@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using Reloaded.Input.Implementations.DInput;
+﻿using Reloaded.Input.Implementations.DInput;
 using Reloaded.Input.Implementations.XInput;
 using Reloaded.Input.Interfaces;
 using Reloaded.Input.Structs;

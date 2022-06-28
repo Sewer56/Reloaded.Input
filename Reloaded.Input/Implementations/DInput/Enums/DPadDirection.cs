@@ -1,5 +1,5 @@
 ﻿using NetEscapades.EnumGenerators;
-using System;
+
 #pragma warning disable CS1591
 
 namespace Reloaded.Input.Implementations.DInput.Enums;

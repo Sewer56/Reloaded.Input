@@ -1,7 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
 using Reloaded.Input.Structs;
 using Reloaded.WPF.MVVM;
 

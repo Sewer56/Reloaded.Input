@@ -1,5 +1,4 @@
-﻿using System;
-using Reloaded.Input.Interfaces;
+﻿using Reloaded.Input.Interfaces;
 using Reloaded.Input.Structs;
 using Vortice.XInput;
 

@@ -1,5 +1,4 @@
-﻿using System;
-using Reloaded.Input.Implementations.DInput.Enums;
+﻿using Reloaded.Input.Implementations.DInput.Enums;
 using Reloaded.Input.Interfaces;
 using Reloaded.Input.Structs;
 using SharpGen.Runtime;
