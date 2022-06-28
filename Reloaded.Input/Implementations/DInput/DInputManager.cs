@@ -14,7 +14,7 @@ public class DInputManager : IControllerManager, IDisposable
     public VirtualController VirtualController { get; private set; }
 
     /// <summary/>
-    public IController[] Controllers { get; private set; }
+    public IController[] Controllers { get; private set; } = Array.Empty<IController>();
     
     private IDirectInput8 DirectInput { get; }
     private Hotplugger Hotplugger { get; }

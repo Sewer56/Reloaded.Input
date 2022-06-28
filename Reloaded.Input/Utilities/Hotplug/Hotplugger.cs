@@ -9,7 +9,7 @@ public class Hotplugger : NativeWindow, IDisposable
     /// <summary>
     /// Executed when the connected devices changed.
     /// </summary>
-    public event Action OnConnectedDevicesChanged;
+    public event Action? OnConnectedDevicesChanged;
 
     /// <summary>
     /// Used for receiving notifications.

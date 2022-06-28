@@ -19,7 +19,7 @@ public class VirtualController : IDisposable
     /// <summary>
     /// Called after the list of controllers is refreshed.
     /// </summary>
-    public event Action OnRefresh;
+    public event Action? OnRefresh;
 
     /// <summary>
     /// The mappings used in this controller.
@@ -39,7 +39,7 @@ public class VirtualController : IDisposable
     /// <summary>
     /// Stores a list of controllers by ID.
     /// </summary>
-    public Dictionary<string, IController> Controllers { get; private set; }
+    public Dictionary<string, IController> Controllers { get; private set; } = new();
 
     /// <summary/>
     public VirtualController(string filePath)
@@ -113,7 +113,7 @@ public class VirtualController : IDisposable
     /// <param name="mappingNo">I</param>
     /// <param name="token">Allows for cancelling the mapping process.</param>
     /// <param name="callback">Executed after every poll attempt for a key or axis.</param>
-    public async Task<bool> Map(int mappingId, MappingType type, int mappingNo, CancellationToken token = default, Action callback = null)
+    public async Task<bool> Map(int mappingId, MappingType type, int mappingNo, CancellationToken token = default, Action? callback = null)
     {
         PollAll();
         var controllerCaches = GetControllerCaches();
@@ -134,7 +134,7 @@ public class VirtualController : IDisposable
         return false;
     }
 
-    private async Task<bool> Map_Axis(int index, MappingType type, int mappingNo, CancellationToken token, Action callback, List<ControllerCache> controllerCaches)
+    private async Task<bool> Map_Axis(int index, MappingType type, int mappingNo, CancellationToken token, Action? callback, List<ControllerCache> controllerCaches)
     {
         var halfMaxAxis = AxisSet.MaxValue / 2;
         while (!token.IsCancellationRequested)
@@ -163,7 +163,7 @@ public class VirtualController : IDisposable
         return false;
     }
 
-    private async Task<bool> Map_Button(int index, MappingType type, int mappingNo, CancellationToken token, Action callback, List<ControllerCache> controllerCaches)
+    private async Task<bool> Map_Button(int index, MappingType type, int mappingNo, CancellationToken token, Action? callback, List<ControllerCache> controllerCaches)
     {
         while (!token.IsCancellationRequested)
         {
@@ -196,7 +196,7 @@ public class VirtualController : IDisposable
     /// <param name="index">The index to test.</param>
     public string GetFriendlyMappingName(int index)
     {
-        if (!Mappings.Mappings.TryGetValue(index, out MultiMapping value)) 
+        if (!Mappings.Mappings.TryGetValue(index, out MultiMapping? value)) 
             return "Unmapped";
         
         return value.GetFriendlyName(Controllers);
@@ -206,9 +206,9 @@ public class VirtualController : IDisposable
     /// Gets a mapping for a given index.
     /// </summary>
     /// <param name="index">The index to test.</param>
-    public MultiMapping GetMapping(int index)
+    public MultiMapping? GetMapping(int index)
     {
-        if (Mappings.Mappings.TryGetValue(index, out MultiMapping value))
+        if (Mappings.Mappings.TryGetValue(index, out MultiMapping? value))
             return value;
 
         return null;
@@ -221,7 +221,7 @@ public class VirtualController : IDisposable
     /// <returns>Value for the index, else default (false)</returns>
     public bool GetButton(int mappingIndex)
     {
-        if (!Mappings.Mappings.TryGetValue(mappingIndex, out MultiMapping value)) 
+        if (!Mappings.Mappings.TryGetValue(mappingIndex, out MultiMapping? value)) 
             return false;
         
         return value.GetButton(Controllers);
@@ -234,7 +234,7 @@ public class VirtualController : IDisposable
     /// <returns>Value for the index, else default (0.0)</returns>
     public float GetAxis(int mappingIndex)
     {
-        if (!Mappings.Mappings.TryGetValue(mappingIndex, out MultiMapping value)) 
+        if (!Mappings.Mappings.TryGetValue(mappingIndex, out MultiMapping? value)) 
             return 0.0f;
         
         return value.GetAxis(Controllers);
