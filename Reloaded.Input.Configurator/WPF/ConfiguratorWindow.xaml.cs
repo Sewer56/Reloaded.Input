@@ -29,16 +29,21 @@ public partial class ConfiguratorWindow : ReloadedWindow
 
     private void OnRightclick(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
-        var senderBtn = (Button)sender;
-        var dataContext = (Mapping)(senderBtn.DataContext);
+        var mapping = GetMappingFromButton(sender);
         if (e.RightButton == MouseButtonState.Pressed)
-            dataContext.UnMap();
+            mapping.UnMap();
     }
 
     private async void Click(object sender, System.Windows.RoutedEventArgs e)
     {
+        var mapping = GetMappingFromButton(sender);
+        await mapping.Map();
+    }
+
+    private static Mapping GetMappingFromButton(object sender)
+    {
         var senderBtn = (Button)sender;
-        var dataContext = (Mapping)(senderBtn.DataContext);
-        await dataContext.Map();
+        var mapping = (Mapping)(senderBtn.DataContext);
+        return mapping;
     }
 }

@@ -90,10 +90,21 @@ public class VirtualController : IDisposable
     /// <summary>
     /// Unmaps a mapping with a specified index.
     /// </summary>
-    /// <param name="index">The index to unmap.</param>
-    public void UnMap(int index)
+    /// <param name="mappingId">The index to unmap.</param>
+    public void UnMap(int mappingId)
     {
-        Mappings.Mappings.Remove(index);
+        Mappings.Mappings.Remove(mappingId);
+    }
+
+    /// <summary>
+    /// Unmaps a mapping with a specified index and mapping no.
+    /// </summary>
+    /// <param name="mappingId">The index to unmap.</param>
+    /// <param name="mappingNo">The </param>
+    public void UnMap(int mappingId, int mappingNo)
+    {
+        if (Mappings.Mappings.TryGetValue(mappingId, out var multiMap))
+            multiMap.Mappings.Remove(mappingNo);
     }
 
     /// <summary>
@@ -110,7 +121,7 @@ public class VirtualController : IDisposable
     /// </summary>
     /// <param name="mappingId">Unique ID for the mapping.</param>
     /// <param name="type">The type of mapping.</param>
-    /// <param name="mappingNo">I</param>
+    /// <param name="mappingNo">The unique number . e.g. 0 for button 1, 1 for button 2 corresponding to same action.</param>
     /// <param name="token">Allows for cancelling the mapping process.</param>
     /// <param name="callback">Executed after every poll attempt for a key or axis.</param>
     public async Task<bool> Map(int mappingId, MappingType type, int mappingNo, CancellationToken token = default, Action? callback = null)

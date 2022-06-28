@@ -32,13 +32,11 @@ public class MainWindowViewModel : ObservableObject
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                if (SelectedConfiguration != null)
-                {
-                    foreach (var mapping in SelectedConfiguration.Mappings)
-                    {
-                        mapping.UpdateValue();
-                    }
-                }
+                if (SelectedConfiguration == null) 
+                    return;
+
+                foreach (var mapping in SelectedConfiguration.Mappings)
+                    mapping.UpdateValue();
             });
 
             await Task.Delay(32);

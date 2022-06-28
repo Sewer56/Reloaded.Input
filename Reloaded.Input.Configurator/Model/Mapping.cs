@@ -42,7 +42,7 @@ public class Mapping : ObservableObject
             : $"{Source.GetButton(MappingIndex)}";
     }
 
-    public async Task Map()
+    public async Task Map(int mappingNo = 0)
     {
         if (!IsNotBinding)
             return;
@@ -52,7 +52,7 @@ public class Mapping : ObservableObject
         stopWatch.Start();
 
         var cts = new CancellationTokenSource();
-        await Source.Map(MappingIndex, Type, 0, cts.Token, Callback);
+        await Source.Map(MappingIndex, Type, mappingNo, cts.Token, Callback);
             
         stopWatch.Reset();
         IsNotBinding = true;
@@ -68,9 +68,9 @@ public class Mapping : ObservableObject
         }
     }
 
-    public void UnMap()
+    public void UnMap(int mappingNo = 0)
     {
-        Source.UnMap(MappingIndex);
+        Source.UnMap(MappingIndex, mappingNo);
         FriendlyName = Source.GetFriendlyMappingName(MappingIndex);
     }
 }
