@@ -1,29 +1,30 @@
-﻿using EnumsNET;
+﻿using System;
 using Reloaded.Input.Interfaces;
 using Reloaded.Input.Structs;
-using SharpDX.XInput;
+using Vortice.XInput;
 
 namespace Reloaded.Input.Implementations.XInput
 {
-    public class XInputController : IController
+    public struct XInputController : IController
     {
-        public SharpDX.XInput.Controller Controller { get; private set; }
+        private static GamepadButtons[] _buttons = Enum.GetValues<GamepadButtons>();
 
-        public XInputController(SharpDX.XInput.Controller controller)
+        public int ControllerIndex { get; set; }
+
+        public XInputController(int index)
         {
-            Controller = controller;
+            ControllerIndex = index;
         }
 
         /* Interface Implementation */
         public ButtonSet GetButtons()
         {
             var buttonSet = new ButtonSet();
-            Controller.GetState(out var state);
-            
+            Vortice.XInput.XInput.GetState(ControllerIndex, out var state);
+
             var buttons = state.Gamepad.Buttons;
-            var flags = Enums.GetMembers<GamepadButtonFlags>();
-            for (int x = 0; x < flags.Count; x++) 
-                buttonSet.SetButton(x, buttons.HasAllFlags(flags[x].Value));
+            for (int x = 0; x < _buttons.Length; x++) 
+                buttonSet.SetButton(x, (buttons & _buttons[x]) == _buttons[x]);
 
             return buttonSet;
         }
@@ -31,7 +32,7 @@ namespace Reloaded.Input.Implementations.XInput
         public AxisSet GetAxis()
         {
             var axisSet = new AxisSet();
-            Controller.GetState(out var state);
+            Vortice.XInput.XInput.GetState(ControllerIndex, out var state);
 
             axisSet.SetAxis(0, ScaleAxis(state.Gamepad.LeftThumbX));
             axisSet.SetAxis(1, ScaleAxis(state.Gamepad.LeftThumbY));
@@ -44,7 +45,7 @@ namespace Reloaded.Input.Implementations.XInput
         }
 
         public string GetId() => GetFriendlyName();
-        public string GetFriendlyName() => $"XInput {(int)Controller.UserIndex}";
+        public string GetFriendlyName() => $"XInput {ControllerIndex}";
 
         private float ScaleAxis(float value) => (value / short.MaxValue) * AxisSet.MaxValue;
         private float ScaleTrigger(float value)

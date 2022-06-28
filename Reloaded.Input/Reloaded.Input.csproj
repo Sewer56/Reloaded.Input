@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <Description>Personal use controller remapping library that wraps XInput and DInput in a common interface.</Description>
     <Authors>Sewer56</Authors>
@@ -18,10 +18,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Enums.NET" Version="4.0.0" />
+    <PackageReference Include="NetEscapades.EnumGenerators" Version="1.0.0-beta04" PrivateAssets="all" ExcludeAssets="runtime" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="SharpDX.DirectInput" Version="4.2.0" />
-    <PackageReference Include="SharpDX.XInput" Version="4.2.0" />
+    <PackageReference Include="Vortice.DirectInput" Version="2.1.19" />
+    <PackageReference Include="Vortice.XInput" Version="2.1.19" />
   </ItemGroup>
 
   <ItemGroup>

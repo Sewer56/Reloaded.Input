@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NetEscapades.EnumGenerators;
+using System;
 
 namespace Reloaded.Input.Implementations.DInput.Enums
 {
@@ -8,6 +9,7 @@ namespace Reloaded.Input.Implementations.DInput.Enums
     /// In reality, this value is analog, with a range of 0-36000, albeit this is practically never used.
     /// </summary>
     [Flags]
+    [EnumExtensions]
     public enum DpadDirection : int
     {
         Up = 0,

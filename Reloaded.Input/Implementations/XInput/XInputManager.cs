@@ -1,5 +1,4 @@
 ﻿using Reloaded.Input.Interfaces;
-using SharpDX.XInput;
 
 namespace Reloaded.Input.Implementations.XInput
 {
@@ -11,12 +10,12 @@ namespace Reloaded.Input.Implementations.XInput
         public XInputManager(VirtualController virtualController)
         {
             VirtualController = virtualController;
-            Controllers = new[]
+            Controllers = new IController[]
             {
-                new XInputController(new SharpDX.XInput.Controller(UserIndex.One)),
-                new XInputController(new SharpDX.XInput.Controller(UserIndex.Two)),
-                new XInputController(new SharpDX.XInput.Controller(UserIndex.Three)),
-                new XInputController(new SharpDX.XInput.Controller(UserIndex.Four)),
+                new XInputController(0),
+                new XInputController(1),
+                new XInputController(2),
+                new XInputController(3),
             };
         }
 

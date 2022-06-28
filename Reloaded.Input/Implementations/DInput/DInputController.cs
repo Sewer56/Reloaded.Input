@@ -2,17 +2,19 @@
 using Reloaded.Input.Implementations.DInput.Enums;
 using Reloaded.Input.Interfaces;
 using Reloaded.Input.Structs;
-using SharpDX;
-using SharpDX.DirectInput;
+using SharpGen.Runtime;
+using Vortice.DirectInput;
 
 namespace Reloaded.Input.Implementations.DInput
 {
     public class DInputController : IController, IDisposable
     {
-        public Joystick Joystick   { get; private set; }
+        private static DpadDirection[] _directions = DpadDirectionExtensions.GetValues();
+
+        public IDirectInputDevice8 Joystick   { get; private set; }
         public string FriendlyName { get; private set; }
 
-        public DInputController(Joystick controller, string friendlyName)
+        public DInputController(IDirectInputDevice8 controller, string friendlyName)
         {
             Joystick = controller;
             FriendlyName = friendlyName;
@@ -28,8 +30,8 @@ namespace Reloaded.Input.Implementations.DInput
             {
                 Joystick.Poll();
                 var buttonSet = new ButtonSet();
-                var state = Joystick.GetCurrentState();
-
+                var state = Joystick.GetCurrentJoystickState();
+                
                 int currentButtonIndex = 0;
                 foreach (var button in state.Buttons)
                 {
@@ -38,19 +40,18 @@ namespace Reloaded.Input.Implementations.DInput
                 }
 
                 // Handle the DPad
-                var povDirections = EnumsNET.Enums.GetMembers<DpadDirection>();
                 foreach (var povController in state.PointOfViewControllers)
                 {
-                    foreach (var direction in povDirections)
+                    foreach (var direction in _directions)
                     {
-                        buttonSet.SetButton(currentButtonIndex, povController == (int) direction.Value);
+                        buttonSet.SetButton(currentButtonIndex, povController == (int) direction);
                         currentButtonIndex += 1;
                     }
                 }
 
                 return buttonSet;
             }
-            catch (SharpDXException e)
+            catch (SharpGenException e)
             {
                 ExceptionHandler(e);
                 return new ButtonSet();
@@ -67,7 +68,7 @@ namespace Reloaded.Input.Implementations.DInput
             {
                 Joystick.Poll();
                 var axisSet = new AxisSet();
-                var state = Joystick.GetCurrentState();
+                var state = Joystick.GetCurrentJoystickState();
                 int currentButtonIndex = 0;
 
                 AddAxisFromArray(ref axisSet, ref currentButtonIndex, state.AccelerationSliders);
@@ -117,7 +118,7 @@ namespace Reloaded.Input.Implementations.DInput
                     }
                 }
             }
-            catch (SharpDXException e)
+            catch (SharpGenException e)
             {
                 ExceptionHandler(e);
                 return new AxisSet();
@@ -128,7 +129,7 @@ namespace Reloaded.Input.Implementations.DInput
             }
         }
 
-        private void ExceptionHandler(SharpDXException ex)
+        private void ExceptionHandler(SharpGenException ex)
         {
             if (ex.ResultCode == ResultCode.NotAcquired || ex.ResultCode == ResultCode.InputLost)
             {
@@ -137,7 +138,7 @@ namespace Reloaded.Input.Implementations.DInput
             }
         }
 
-        public string GetId() => Joystick.Information.InstanceGuid.ToString();
+        public string GetId() => Joystick.DeviceInfo.InstanceGuid.ToString();
         public string GetFriendlyName() => FriendlyName;
     }
 }

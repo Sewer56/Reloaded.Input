@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using EnumsNET;
 using Reloaded.Input.Interfaces;
 using Reloaded.Input.Structs;
 using Reloaded.Input.Utilities.Hotplug;
-using SharpDX.DirectInput;
+using Vortice.DirectInput;
 
 namespace Reloaded.Input.Implementations.DInput
 {
@@ -12,13 +11,13 @@ namespace Reloaded.Input.Implementations.DInput
     {
         public VirtualController VirtualController { get; private set; }
         public IController[] Controllers { get; private set; }
-        private DirectInput DirectInput { get; }
+        private IDirectInput8 DirectInput { get; }
         private Hotplugger Hotplugger { get; }
 
         public DInputManager(VirtualController virtualController)
         {
             VirtualController = virtualController;
-            DirectInput = new DirectInput();
+            DirectInput = Vortice.DirectInput.DInput.DirectInput8Create();
             Hotplugger = new Hotplugger();
             Refresh();
 
@@ -52,14 +51,17 @@ namespace Reloaded.Input.Implementations.DInput
         private IController AcquireController(DeviceInstance device, int controllerIndex)
         {
             // Initialize Joystick/Controller
-            var controller = new Joystick(DirectInput, device.InstanceGuid);
-            if (controller.Information.Type == DeviceType.Mouse)
+            var controller = DirectInput.CreateDevice(device.InstanceGuid);
+            if (controller.DeviceInfo.Type == DeviceType.Mouse)
                 controller.Properties.AxisMode = DeviceAxisMode.Relative;
-            
+
+            // Set buffer size
+            controller.SetDataFormat<RawJoystickState>();
+
             // Clamp axis to our values.
             foreach (var deviceObject in controller.GetObjects())
-                if (deviceObject.ObjectId.Flags.HasAllFlags(DeviceObjectTypeFlags.AbsoluteAxis))
-                    controller.GetObjectPropertiesById(deviceObject.ObjectId).Range = new InputRange((int) AxisSet.MinValue, (int) AxisSet.MaxValue);
+                if ((deviceObject.ObjectId.Flags & DeviceObjectTypeFlags.AbsoluteAxis) == DeviceObjectTypeFlags.AbsoluteAxis)
+                    controller.Properties.Range = new InputRange((int) AxisSet.MinValue, (int) AxisSet.MaxValue);
 
             // Acquire the DInput Device
             controller.Acquire();
