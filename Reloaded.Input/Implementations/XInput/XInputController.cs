@@ -6,12 +6,15 @@ using Vortice.XInput;
 namespace Reloaded.Input.Implementations.XInput;
 
 /// <inheritdoc />
-public struct XInputController : IController
+public class XInputController : IController
 {
-    private static GamepadButtons[] _buttons = Enum.GetValues<GamepadButtons>();
+    private static readonly GamepadButtons[] _allButtons = Enum.GetValues<GamepadButtons>();
 
     /// <summary/>
     public int ControllerIndex { get; set; }
+
+    private ButtonSet _buttons;
+    private AxisSet _axis;
 
     /// <summary/>
     public XInputController(int index)
@@ -20,34 +23,32 @@ public struct XInputController : IController
     }
 
     /* Interface Implementation */
-    /// <inheritdoc />
-    public ButtonSet GetButtons()
+    public void Poll()
     {
-        var buttonSet = new ButtonSet();
         Vortice.XInput.XInput.GetState(ControllerIndex, out var state);
+
+        // Buttons
+        _buttons = new ButtonSet();
 
         var buttons = state.Gamepad.Buttons;
-        for (int x = 0; x < _buttons.Length; x++) 
-            buttonSet.SetButton(x, (buttons & _buttons[x]) == _buttons[x]);
+        for (int x = 0; x < _allButtons.Length; x++)
+            _buttons.SetButton(x, (buttons & _allButtons[x]) == _allButtons[x]);
 
-        return buttonSet;
+        // Axis
+        _axis = new AxisSet();
+        _axis.SetAxis(0, ScaleAxis(state.Gamepad.LeftThumbX));
+        _axis.SetAxis(1, ScaleAxis(state.Gamepad.LeftThumbY));
+        _axis.SetAxis(2, ScaleAxis(state.Gamepad.RightThumbX));
+        _axis.SetAxis(3, ScaleAxis(state.Gamepad.RightThumbY));
+        _axis.SetAxis(4, ScaleTrigger(state.Gamepad.LeftTrigger));
+        _axis.SetAxis(5, ScaleTrigger(state.Gamepad.RightTrigger));
     }
 
     /// <inheritdoc />
-    public AxisSet GetAxis()
-    {
-        var axisSet = new AxisSet();
-        Vortice.XInput.XInput.GetState(ControllerIndex, out var state);
+    public ButtonSet GetButtons() => _buttons;
 
-        axisSet.SetAxis(0, ScaleAxis(state.Gamepad.LeftThumbX));
-        axisSet.SetAxis(1, ScaleAxis(state.Gamepad.LeftThumbY));
-        axisSet.SetAxis(2, ScaleAxis(state.Gamepad.RightThumbX));
-        axisSet.SetAxis(3, ScaleAxis(state.Gamepad.RightThumbY));
-        axisSet.SetAxis(4, ScaleTrigger(state.Gamepad.LeftTrigger));
-        axisSet.SetAxis(5, ScaleTrigger(state.Gamepad.RightTrigger));
-            
-        return axisSet;
-    }
+    /// <inheritdoc />
+    public AxisSet GetAxis() => _axis;
 
     /// <inheritdoc />
     public string GetId() => GetFriendlyName();

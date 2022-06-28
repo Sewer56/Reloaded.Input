@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using Reloaded.Input.Structs;
@@ -11,9 +12,25 @@ public class MappingSet
     /// <summary>
     /// Contains a list of mappings of unique ID to mapping value.
     /// </summary>
-    public Dictionary<int, Mapping> Mappings { get; set; } = new();
+    public Dictionary<int, MultiMapping> Mappings { get; set; } = new();
 
     // Serialization Methods
+
+    /// <summary>
+    /// Gets an existing mapping or creates a new one with a given type.
+    /// </summary>
+    /// <param name="index">The index of the mapping.</param>
+    /// <param name="type">Type of the mapping [in case one needs to be created].</param>
+    public MultiMapping GetOrCreateMapping(int index, MappingType type)
+    {
+        if (!Mappings.TryGetValue(index, out var value))
+        {
+            value = new MultiMapping(type);
+            Mappings[index] = value;
+        }
+
+        return value;
+    }
 
     /// <summary>
     /// Saves the mapping file to a given file path.
@@ -28,11 +45,21 @@ public class MappingSet
     /// </summary>
     public static MappingSet ReadOrCreateFrom(string filePath)
     {
-        var result = File.Exists(filePath)
-            ? JsonSerializer.Deserialize<MappingSet>(File.ReadAllText(filePath), _serializerSettings)
-            : new MappingSet();
+        try
+        {
+            var result = File.Exists(filePath)
+                ? JsonSerializer.Deserialize<MappingSet>(File.ReadAllText(filePath), _serializerSettings)
+                : new MappingSet();
 
-        return result;
+            if (result == null)
+                return new MappingSet();
+
+            return result;
+        }
+        catch (Exception)
+        {
+            return new MappingSet();
+        }
     }
 
     private static JsonSerializerOptions _serializerSettings = new()

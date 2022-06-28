@@ -97,23 +97,34 @@ public class VirtualController : IDisposable
     }
 
     /// <summary>
+    /// Polls all the controllers managed by this instance.
+    /// </summary>
+    public void PollAll()
+    {
+        foreach (var value in Controllers.Values)
+            value.Poll();
+    }
+
+    /// <summary>
     /// Polls controllers for a change in inputs and maps a specified button. 
     /// </summary>
-    /// <param name="index">Unique mapping index for the mapping.</param>
+    /// <param name="mappingId">Unique ID for the mapping.</param>
     /// <param name="type">The type of mapping.</param>
+    /// <param name="mappingNo">I</param>
     /// <param name="token">Allows for cancelling the mapping process.</param>
     /// <param name="callback">Executed after every poll attempt for a key or axis.</param>
-    public async Task<bool> Map(int index, MappingType type, CancellationToken token = default, Action callback = null)
+    public async Task<bool> Map(int mappingId, MappingType type, int mappingNo, CancellationToken token = default, Action callback = null)
     {
+        PollAll();
         var controllerCaches = GetControllerCaches();
 
         try
         {
             if (type == MappingType.Button)
-                return await Map_Button(index, type, token, callback, controllerCaches);
+                return await Map_Button(mappingId, type, mappingNo, token, callback, controllerCaches);
 
             if (type == MappingType.Axis)
-                return await Map_Axis(index, type, token, callback, controllerCaches);
+                return await Map_Axis(mappingId, type, mappingNo, token, callback, controllerCaches);
         }
         catch (TaskCanceledException)
         {
@@ -123,51 +134,57 @@ public class VirtualController : IDisposable
         return false;
     }
 
-    private async Task<bool> Map_Axis(int index, MappingType type, CancellationToken token, Action callback, List<ControllerCache> controllerCaches)
+    private async Task<bool> Map_Axis(int index, MappingType type, int mappingNo, CancellationToken token, Action callback, List<ControllerCache> controllerCaches)
     {
         var halfMaxAxis = AxisSet.MaxValue / 2;
         while (!token.IsCancellationRequested)
         {
             foreach (var cache in controllerCaches)
             {
-                var newAxis = cache.Controller.GetAxis();
+                var controller = cache.Controller;
+                controller.Poll();
+                var newAxis = controller.GetAxis();
                 for (int x = 0; x < AxisSet.NumberOfAxis; x++)
                 {
                     var difference = MathF.Abs(cache.Axis.GetAxis(x) - newAxis.GetAxis(x));
                     if (difference < halfMaxAxis)
                         continue;
 
-                    Mappings.Mappings[index] = new Mapping(cache.Controller.GetId(), type, x);
+                    var mapping = Mappings.GetOrCreateMapping(index, type);
+                    mapping.SetMapping(mappingNo, new Mapping(cache.Controller.GetId(), x));
                     return true;
                 }
             }
 
             callback?.Invoke();
-            await Task.Delay(MapSleepTime, token);
+            await Task.Delay(MapSleepTime);
         }
 
         return false;
     }
 
-    private async Task<bool> Map_Button(int index, MappingType type, CancellationToken token, Action callback, List<ControllerCache> controllerCaches)
+    private async Task<bool> Map_Button(int index, MappingType type, int mappingNo, CancellationToken token, Action callback, List<ControllerCache> controllerCaches)
     {
         while (!token.IsCancellationRequested)
         {
             foreach (var cache in controllerCaches)
             {
-                var newButtons = cache.Controller.GetButtons();
+                var controller = cache.Controller;
+                controller.Poll();
+                var newButtons = controller.GetButtons();
                 for (int x = 0; x < ButtonSet.NumberOfButtons; x++)
                 {
                     if (newButtons.GetButton(x) == cache.Buttons.GetButton(x))
                         continue;
 
-                    Mappings.Mappings[index] = new Mapping(cache.Controller.GetId(), type, x);
+                    var mapping = Mappings.GetOrCreateMapping(index, type);
+                    mapping.SetMapping(mappingNo, new Mapping(cache.Controller.GetId(), x));
                     return true;
                 }
             }
 
             callback?.Invoke();
-            await Task.Delay(MapSleepTime, token);
+            await Task.Delay(MapSleepTime);
         }
 
         return false;
@@ -179,22 +196,19 @@ public class VirtualController : IDisposable
     /// <param name="index">The index to test.</param>
     public string GetFriendlyMappingName(int index)
     {
-        if (!Mappings.Mappings.TryGetValue(index, out Mapping value)) 
+        if (!Mappings.Mappings.TryGetValue(index, out MultiMapping value)) 
             return "Unmapped";
-
-        if (Controllers.TryGetValue(value.ControllerId, out var controller))
-            return value.GetFriendlyName(controller);
-
-        return "Unmapped";
+        
+        return value.GetFriendlyName(Controllers);
     }
 
     /// <summary>
     /// Gets a mapping for a given index.
     /// </summary>
     /// <param name="index">The index to test.</param>
-    public Mapping GetMapping(int index)
+    public MultiMapping GetMapping(int index)
     {
-        if (Mappings.Mappings.TryGetValue(index, out Mapping value))
+        if (Mappings.Mappings.TryGetValue(index, out MultiMapping value))
             return value;
 
         return null;
@@ -207,15 +221,10 @@ public class VirtualController : IDisposable
     /// <returns>Value for the index, else default (false)</returns>
     public bool GetButton(int mappingIndex)
     {
-        if (!Mappings.Mappings.TryGetValue(mappingIndex, out Mapping value)) 
+        if (!Mappings.Mappings.TryGetValue(mappingIndex, out MultiMapping value)) 
             return false;
-
-        if (!Controllers.TryGetValue(value.ControllerId, out var controller)) 
-            return false;
-
-        var buttons = controller.GetButtons();
-        value.GetValue(ref buttons, out bool result);
-        return result;
+        
+        return value.GetButton(Controllers);
     }
 
     /// <summary>
@@ -225,15 +234,10 @@ public class VirtualController : IDisposable
     /// <returns>Value for the index, else default (0.0)</returns>
     public float GetAxis(int mappingIndex)
     {
-        if (!Mappings.Mappings.TryGetValue(mappingIndex, out Mapping value)) 
+        if (!Mappings.Mappings.TryGetValue(mappingIndex, out MultiMapping value)) 
             return 0.0f;
-
-        if (!Controllers.TryGetValue(value.ControllerId, out var controller)) 
-            return 0.0f;
-
-        var axis = controller.GetAxis();
-        value.GetValue(ref axis, out float result);
-        return result;
+        
+        return value.GetAxis(Controllers);
     }
 
     private List<ControllerCache> GetControllerCaches()

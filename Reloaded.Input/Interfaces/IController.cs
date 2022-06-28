@@ -18,6 +18,11 @@ public interface IController
     string GetFriendlyName();
 
     /// <summary>
+    /// Updates the values returned by <see cref="GetButtons"/> and <see cref="GetAxis"/>.
+    /// </summary>
+    void Poll();
+
+    /// <summary>
     /// Retrieves all of the controller buttons.
     /// </summary>
     ButtonSet GetButtons();

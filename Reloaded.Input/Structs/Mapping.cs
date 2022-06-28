@@ -1,45 +1,41 @@
-﻿using Reloaded.Input.Interfaces;
+﻿using System.Collections.Generic;
+using Reloaded.Input.Interfaces;
 
 namespace Reloaded.Input.Structs;
 
 /// <summary/>
-public class Mapping
+public struct Mapping
 {
     /// <summary>
     /// The ID of the controller this mapping is assigned to.
     /// </summary>
-    public string ControllerId { get; private set; }
-
-    /// <summary>
-    /// The mapping type, axis or button.
-    /// </summary>
-    public MappingType MappingType { get; private set; }
+    public string ControllerId { get; set; }
 
     /// <summary>
     /// The index of <see cref="MappingType"/> the button was mapped to.
     /// </summary>
-    public int Index { get; private set; }
+    public int Index { get; set; }
 
     /// <summary>
     /// Creates a mapping given a unique controller ID, mapping type and index.
     /// </summary>
     /// <param name="controllerId">Unique ID of the controller.</param>
-    /// <param name="mappingType">Type of mapping performed.</param>
     /// <param name="index">Index into the <see cref="ButtonSet"/> or <see cref="AxisSet"/> arrays.</param>
-    public Mapping(string controllerId, MappingType mappingType, int index)
+    public Mapping(string controllerId, int index)
     {
         ControllerId = controllerId;
-        MappingType = mappingType;
         Index = index;
     }
 
     /// <summary>
     /// Gets a friendly name for the mapping.
     /// </summary>
-    /// <param name="controller"></param>
-    public string GetFriendlyName(IController controller)
+    public string GetFriendlyName(Dictionary<string, IController> controllerIdToController, MappingType type)
     {
-        if (MappingType == MappingType.Button)
+        if (!controllerIdToController.TryGetValue(ControllerId, out var controller))
+            return "";
+
+        if (type == MappingType.Button)
             return $"{controller.GetFriendlyName()}/B{Index}";
 
         return $"{controller.GetFriendlyName()}/A{Index}";
@@ -48,31 +44,23 @@ public class Mapping
     /// <summary>
     /// Gets the mapped value from the passed in controller instance.
     /// </summary>
-    public void GetValue(ref AxisSet axis, out float value)
+    public float GetAxis(Dictionary<string, IController> controllerIdToController)
     {
-        value = 0.0f;
-        switch (MappingType)
-        {
-            case MappingType.Axis:
-                value = axis.GetAxis(Index);
-                break;
-        }
+        if (!controllerIdToController.TryGetValue(ControllerId, out var controller))
+            return 0.0f;
+
+        return controller.GetAxis().GetAxis(Index);
     }
 
     /// <summary>
     /// Gets the mapped value from the passed in controller instance.
     /// </summary>
-    public void GetValue(ref ButtonSet buttons, out bool value)
+    public bool GetButton(Dictionary<string, IController> controllerIdToController)
     {
-        switch (MappingType)
-        {
-            case MappingType.Button:
-                value = buttons.GetButton(Index);
-                break;
-            default:
-                value = false;
-                break;
-        }
+        if (!controllerIdToController.TryGetValue(ControllerId, out var controller))
+            return false;
+
+        return controller.GetButtons().GetButton(Index);
     }
 }
 

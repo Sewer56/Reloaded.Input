@@ -18,6 +18,9 @@ public class DInputController : IController, IDisposable
     /// <summary/>
     public string FriendlyName { get; private set; }
 
+    private ButtonSet _buttons;
+    private AxisSet _axis;
+
     /// <summary/>
     public DInputController(IDirectInputDevice8 controller, string friendlyName)
     {
@@ -30,112 +33,78 @@ public class DInputController : IController, IDisposable
 
     /* Interface Implementation */
 
-    /// <inheritdoc />
-    public ButtonSet GetButtons()
+    public void Poll()
     {
         try
         {
             Joystick.Poll();
-            var buttonSet = new ButtonSet();
             var state = Joystick.GetCurrentJoystickState();
-                
+
+            // Buttons
+            _buttons = new ButtonSet();
+
             int currentButtonIndex = 0;
             foreach (var button in state.Buttons)
             {
-                buttonSet.SetButton(currentButtonIndex, button);
+                _buttons.SetButton(currentButtonIndex, button);
                 currentButtonIndex += 1;
             }
 
-            // Handle the DPad
+            // Buttons: DPad
             foreach (var povController in state.PointOfViewControllers)
             {
                 foreach (var direction in _directions)
                 {
-                    buttonSet.SetButton(currentButtonIndex, povController == (int) direction);
+                    _buttons.SetButton(currentButtonIndex, povController == (int)direction);
                     currentButtonIndex += 1;
                 }
             }
 
-            return buttonSet;
+            // Axis
+            int currentAxisIndex = 0;
+            _axis = new AxisSet();
+
+            AddAxisFromArray(ref _axis, ref currentAxisIndex, state.AccelerationSliders);
+            AddAxisFromArray(ref _axis, ref currentAxisIndex, state.ForceSliders);
+            AddAxisFromArray(ref _axis, ref currentAxisIndex, state.Sliders);
+            AddAxisFromArray(ref _axis, ref currentAxisIndex, state.VelocitySliders);
+            AddAxis(ref _axis, ref currentAxisIndex, state.X);
+            AddAxis(ref _axis, ref currentAxisIndex, state.Y);
+            AddAxis(ref _axis, ref currentAxisIndex, state.Z);
+            AddAxis(ref _axis, ref currentAxisIndex, state.RotationX);
+            AddAxis(ref _axis, ref currentAxisIndex, state.RotationY);
+            AddAxis(ref _axis, ref currentAxisIndex, state.RotationZ);
+            AddAxis(ref _axis, ref currentAxisIndex, state.VelocityX);
+            AddAxis(ref _axis, ref currentAxisIndex, state.VelocityY);
+            AddAxis(ref _axis, ref currentAxisIndex, state.VelocityZ);
+            AddAxis(ref _axis, ref currentAxisIndex, state.AngularVelocityX);
+            AddAxis(ref _axis, ref currentAxisIndex, state.AngularVelocityY);
+            AddAxis(ref _axis, ref currentAxisIndex, state.AngularVelocityZ);
+            AddAxis(ref _axis, ref currentAxisIndex, state.AccelerationX);
+            AddAxis(ref _axis, ref currentAxisIndex, state.AccelerationY);
+            AddAxis(ref _axis, ref currentAxisIndex, state.AccelerationZ);
+            AddAxis(ref _axis, ref currentAxisIndex, state.AngularAccelerationX);
+            AddAxis(ref _axis, ref currentAxisIndex, state.AngularAccelerationY);
+            AddAxis(ref _axis, ref currentAxisIndex, state.AngularAccelerationZ);
+            AddAxis(ref _axis, ref currentAxisIndex, state.ForceX);
+            AddAxis(ref _axis, ref currentAxisIndex, state.ForceY);
+            AddAxis(ref _axis, ref currentAxisIndex, state.ForceZ);
+            AddAxis(ref _axis, ref currentAxisIndex, state.TorqueX);
+            AddAxis(ref _axis, ref currentAxisIndex, state.TorqueY);
+            AddAxis(ref _axis, ref currentAxisIndex, state.TorqueZ);
         }
         catch (SharpGenException e)
         {
             ExceptionHandler(e);
-            return new ButtonSet();
         }
-        catch (Exception)
-        {
-            return new ButtonSet();
-        }
+        catch (Exception) { /* Ignored */ }
     }
 
     /// <inheritdoc />
-    public AxisSet GetAxis()
-    {
-        try
-        {
-            Joystick.Poll();
-            var axisSet = new AxisSet();
-            var state = Joystick.GetCurrentJoystickState();
-            int currentButtonIndex = 0;
+    public ButtonSet GetButtons() => _buttons;
 
-            AddAxisFromArray(ref axisSet, ref currentButtonIndex, state.AccelerationSliders);
-            AddAxisFromArray(ref axisSet, ref currentButtonIndex, state.ForceSliders);
-            AddAxisFromArray(ref axisSet, ref currentButtonIndex, state.Sliders);
-            AddAxisFromArray(ref axisSet, ref currentButtonIndex, state.VelocitySliders);
-            AddAxis(ref axisSet, ref currentButtonIndex, state.X);
-            AddAxis(ref axisSet, ref currentButtonIndex, state.Y);
-            AddAxis(ref axisSet, ref currentButtonIndex, state.Z);
-            AddAxis(ref axisSet, ref currentButtonIndex, state.RotationX);
-            AddAxis(ref axisSet, ref currentButtonIndex, state.RotationY);
-            AddAxis(ref axisSet, ref currentButtonIndex, state.RotationZ);
-            AddAxis(ref axisSet, ref currentButtonIndex, state.VelocityX);
-            AddAxis(ref axisSet, ref currentButtonIndex, state.VelocityY);
-            AddAxis(ref axisSet, ref currentButtonIndex, state.VelocityZ);
-            AddAxis(ref axisSet, ref currentButtonIndex, state.AngularVelocityX);
-            AddAxis(ref axisSet, ref currentButtonIndex, state.AngularVelocityY);
-            AddAxis(ref axisSet, ref currentButtonIndex, state.AngularVelocityZ);
-            AddAxis(ref axisSet, ref currentButtonIndex, state.AccelerationX);
-            AddAxis(ref axisSet, ref currentButtonIndex, state.AccelerationY);
-            AddAxis(ref axisSet, ref currentButtonIndex, state.AccelerationZ);
-            AddAxis(ref axisSet, ref currentButtonIndex, state.AngularAccelerationX);
-            AddAxis(ref axisSet, ref currentButtonIndex, state.AngularAccelerationY);
-            AddAxis(ref axisSet, ref currentButtonIndex, state.AngularAccelerationZ);
-            AddAxis(ref axisSet, ref currentButtonIndex, state.ForceX);
-            AddAxis(ref axisSet, ref currentButtonIndex, state.ForceY);
-            AddAxis(ref axisSet, ref currentButtonIndex, state.ForceZ);
-            AddAxis(ref axisSet, ref currentButtonIndex, state.TorqueX);
-            AddAxis(ref axisSet, ref currentButtonIndex, state.TorqueY);
-            AddAxis(ref axisSet, ref currentButtonIndex, state.TorqueZ);
-
-            return axisSet;
-
-            // Local Utility Functions
-            void AddAxis(ref AxisSet set, ref int buttonIndex, int value)
-            {
-                set.SetAxis(currentButtonIndex, value);
-                buttonIndex += 1;
-            }
-
-            void AddAxisFromArray(ref AxisSet set, ref int buttonIndex, int[] axis)
-            {
-                foreach (var ax in axis)
-                {
-                    set.SetAxis(currentButtonIndex, ax);
-                    buttonIndex += 1;
-                }
-            }
-        }
-        catch (SharpGenException e)
-        {
-            ExceptionHandler(e);
-            return new AxisSet();
-        }
-        catch (Exception)
-        {
-            return new AxisSet();
-        }
-    }
+    /// <inheritdoc />
+    public AxisSet GetAxis() => _axis;
 
     private void ExceptionHandler(SharpGenException ex)
     {
@@ -151,4 +120,19 @@ public class DInputController : IController, IDisposable
 
     /// <inheritdoc />
     public string GetFriendlyName() => FriendlyName;
+
+    static void AddAxis(ref AxisSet set, ref int axisIndex, int value)
+    {
+        set.SetAxis(axisIndex, value);
+        axisIndex += 1;
+    }
+
+    static void AddAxisFromArray(ref AxisSet set, ref int axisIndex, int[] axis)
+    {
+        foreach (var ax in axis)
+        {
+            set.SetAxis(axisIndex, ax);
+            axisIndex += 1;
+        }
+    }
 }

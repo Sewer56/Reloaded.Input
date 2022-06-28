@@ -35,6 +35,9 @@ public class Mapping : ObservableObject
 
     public void UpdateValue()
     {
+        if (IsNotBinding)
+            Source.PollAll();
+        
         CurrentValue = Type == MappingType.Axis ? $"{Source.GetAxis(MappingIndex)}" 
             : $"{Source.GetButton(MappingIndex)}";
     }
@@ -49,7 +52,7 @@ public class Mapping : ObservableObject
         stopWatch.Start();
 
         var cts = new CancellationTokenSource();
-        await Source.Map(MappingIndex, Type, cts.Token, Callback);
+        await Source.Map(MappingIndex, Type, 0, cts.Token, Callback);
             
         stopWatch.Reset();
         IsNotBinding = true;
