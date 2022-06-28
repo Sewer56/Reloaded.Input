@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <PackageReference Include="NetEscapades.EnumGenerators" Version="1.0.0-beta04" PrivateAssets="all" ExcludeAssets="runtime" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Vortice.DirectInput" Version="2.1.19" />
     <PackageReference Include="Vortice.XInput" Version="2.1.19" />
   </ItemGroup>
