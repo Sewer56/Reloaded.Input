@@ -1,22 +1,21 @@
 ﻿using Reloaded.Input.Structs;
 using Reloaded.WPF.MVVM;
 
-namespace Reloaded.Input.Configurator
-{
-    /// <summary>
-    /// Represents an individual entry the user can supply to be mapped by the configurator.
-    /// </summary>
-    public class MappingEntry : ObservableObject
-    {
-        public string Name                  { get; private set; }
-        public int MappingIndex             { get; private set; }
-        public MappingType Type             { get; private set; }
+namespace Reloaded.Input.Configurator;
 
-        public MappingEntry(string name, int mappingIndex, MappingType type)
-        {
-            Name = name;
-            MappingIndex = mappingIndex;
-            Type = type;
-        }
+/// <summary>
+/// Represents an individual entry the user can supply to be mapped by the configurator.
+/// </summary>
+public class MappingEntry : ObservableObject
+{
+    public string Name                  { get; private set; }
+    public int MappingIndex             { get; private set; }
+    public MappingType Type             { get; private set; }
+
+    public MappingEntry(string name, int mappingIndex, MappingType type)
+    {
+        Name = name;
+        MappingIndex = mappingIndex;
+        Type = type;
     }
 }

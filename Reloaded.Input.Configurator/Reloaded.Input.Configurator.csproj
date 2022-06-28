@@ -13,6 +13,7 @@
     <RepositoryUrl>https://github.com/Sewer56/Reloaded.Input.git</RepositoryUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Version>1.0.3</Version>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
