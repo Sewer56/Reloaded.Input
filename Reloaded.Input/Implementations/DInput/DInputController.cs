@@ -7,13 +7,18 @@ using Vortice.DirectInput;
 
 namespace Reloaded.Input.Implementations.DInput;
 
+/// <summary/>
 public class DInputController : IController, IDisposable
 {
-    private static DpadDirection[] _directions = DpadDirectionExtensions.GetValues();
+    private static readonly DpadDirection[] _directions = DpadDirectionExtensions.GetValues();
 
+    /// <summary/>
     public IDirectInputDevice8 Joystick   { get; private set; }
+
+    /// <summary/>
     public string FriendlyName { get; private set; }
 
+    /// <summary/>
     public DInputController(IDirectInputDevice8 controller, string friendlyName)
     {
         Joystick = controller;
@@ -24,6 +29,8 @@ public class DInputController : IController, IDisposable
     public void Dispose() => Joystick?.Dispose();
 
     /* Interface Implementation */
+
+    /// <inheritdoc />
     public ButtonSet GetButtons()
     {
         try
@@ -62,6 +69,7 @@ public class DInputController : IController, IDisposable
         }
     }
 
+    /// <inheritdoc />
     public AxisSet GetAxis()
     {
         try
@@ -138,6 +146,9 @@ public class DInputController : IController, IDisposable
         }
     }
 
+    /// <inheritdoc />
     public string GetId() => Joystick.DeviceInfo.InstanceGuid.ToString();
+
+    /// <inheritdoc />
     public string GetFriendlyName() => FriendlyName;
 }

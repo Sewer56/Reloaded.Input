@@ -2,6 +2,7 @@
 
 namespace Reloaded.Input.Structs;
 
+/// <summary/>
 public class Mapping
 {
     /// <summary>
@@ -19,6 +20,12 @@ public class Mapping
     /// </summary>
     public int Index { get; private set; }
 
+    /// <summary>
+    /// Creates a mapping given a unique controller ID, mapping type and index.
+    /// </summary>
+    /// <param name="controllerId">Unique ID of the controller.</param>
+    /// <param name="mappingType">Type of mapping performed.</param>
+    /// <param name="index">Index into the <see cref="ButtonSet"/> or <see cref="AxisSet"/> arrays.</param>
     public Mapping(string controllerId, MappingType mappingType, int index)
     {
         ControllerId = controllerId;
@@ -74,6 +81,8 @@ public class Mapping
 /// </summary>
 public enum MappingType
 {
+    /// <summary/>
     Button,
+    /// <summary/>
     Axis
 }

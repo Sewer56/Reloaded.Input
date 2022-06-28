@@ -1,5 +1,8 @@
 ﻿namespace Reloaded.Input.Structs;
 
+/// <summary>
+/// Abstracts a number of Axis values returned from a given API.
+/// </summary>
 public unsafe struct AxisSet
 {
     /// <summary>
@@ -12,7 +15,11 @@ public unsafe struct AxisSet
     /// </summary>
     public const float MinValue = -10000F;
 
+    /// <summary>
+    /// Total number of axis supported by this struct.
+    /// </summary>
     public const int NumberOfAxis = 64;
+
     private fixed float _axis[NumberOfAxis];
 
     /// <summary>

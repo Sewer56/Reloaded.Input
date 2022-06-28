@@ -7,13 +7,19 @@ using Vortice.DirectInput;
 
 namespace Reloaded.Input.Implementations.DInput;
 
+/// <summary/>
 public class DInputManager : IControllerManager, IDisposable
 {
+    /// <summary/>
     public VirtualController VirtualController { get; private set; }
+
+    /// <summary/>
     public IController[] Controllers { get; private set; }
+    
     private IDirectInput8 DirectInput { get; }
     private Hotplugger Hotplugger { get; }
 
+    /// <summary/>
     public DInputManager(VirtualController virtualController)
     {
         VirtualController = virtualController;
@@ -36,6 +42,7 @@ public class DInputManager : IControllerManager, IDisposable
         Hotplugger?.Dispose();
     }
 
+    /// <summary/>
     public void Refresh()
     {
         DisposeControllers();
@@ -69,7 +76,10 @@ public class DInputManager : IControllerManager, IDisposable
     }
 
     // Interface Implementation
+    /// <inheritdoc />
     public IController[] GetControllers() => Controllers;
+
+    /// <inheritdoc />
     public VirtualController GetRemapper() => VirtualController;
 
     private void DisposeControllers()

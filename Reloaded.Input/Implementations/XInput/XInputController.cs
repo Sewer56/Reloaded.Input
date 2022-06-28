@@ -5,18 +5,22 @@ using Vortice.XInput;
 
 namespace Reloaded.Input.Implementations.XInput;
 
+/// <inheritdoc />
 public struct XInputController : IController
 {
     private static GamepadButtons[] _buttons = Enum.GetValues<GamepadButtons>();
 
+    /// <summary/>
     public int ControllerIndex { get; set; }
 
+    /// <summary/>
     public XInputController(int index)
     {
         ControllerIndex = index;
     }
 
     /* Interface Implementation */
+    /// <inheritdoc />
     public ButtonSet GetButtons()
     {
         var buttonSet = new ButtonSet();
@@ -29,6 +33,7 @@ public struct XInputController : IController
         return buttonSet;
     }
 
+    /// <inheritdoc />
     public AxisSet GetAxis()
     {
         var axisSet = new AxisSet();
@@ -44,7 +49,10 @@ public struct XInputController : IController
         return axisSet;
     }
 
+    /// <inheritdoc />
     public string GetId() => GetFriendlyName();
+
+    /// <inheritdoc />
     public string GetFriendlyName() => $"XInput {ControllerIndex}";
 
     private float ScaleAxis(float value) => (value / short.MaxValue) * AxisSet.MaxValue;

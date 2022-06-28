@@ -2,7 +2,7 @@
 
 namespace Reloaded.Input.Structs;
 
-public class ControllerCache
+internal class ControllerCache
 {
     public IController Controller { get; set; }
     public ButtonSet Buttons { get; set; }

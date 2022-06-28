@@ -3,6 +3,7 @@ using System.Windows.Forms;
 
 namespace Reloaded.Input.Utilities.Hotplug;
 
+/// <summary/>
 public class Hotplugger : NativeWindow, IDisposable
 {
     /// <summary>
@@ -26,11 +27,13 @@ public class Hotplugger : NativeWindow, IDisposable
         NotificationReceiver = new DeviceNotification(Handle, false);
     }
 
+    /// <summary/>
     ~Hotplugger()
     {
         Dispose();
     }
 
+    /// <summary/>
     public void Dispose()
     {
         NotificationReceiver?.Dispose();

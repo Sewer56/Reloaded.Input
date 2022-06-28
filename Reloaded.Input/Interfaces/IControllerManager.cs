@@ -1,5 +1,8 @@
 ﻿namespace Reloaded.Input.Interfaces;
 
+/// <summary>
+/// Interface that abstracts a manager for a given controller API.
+/// </summary>
 public interface IControllerManager
 {
     /// <summary>

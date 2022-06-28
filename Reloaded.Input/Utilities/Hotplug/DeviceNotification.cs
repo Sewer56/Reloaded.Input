@@ -35,11 +35,13 @@ public class DeviceNotification : IDisposable
         _notificationHandle = Native.RegisterDeviceNotification(windowHandle, _buffer, usbOnly ? 0 : Native.DEVICE_NOTIFY_ALL_INTERFACE_CLASSES);
     }
 
+    /// <summary/>
     ~DeviceNotification()
     {
         ReleaseUnmanagedResources();
     }
 
+    /// <summary/>
     public void Dispose()
     {
         ReleaseUnmanagedResources();

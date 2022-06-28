@@ -2,6 +2,9 @@
 
 namespace Reloaded.Input.Interfaces;
 
+/// <summary>
+/// Abstracts an individual controller from an API like XInput or DInput.
+/// </summary>
 public interface IController
 {
     /// <summary>

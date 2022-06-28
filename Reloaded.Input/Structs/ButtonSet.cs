@@ -1,8 +1,15 @@
 ﻿namespace Reloaded.Input.Structs;
 
+/// <summary>
+/// Abstracts a number of buttons returned from a controller.
+/// </summary>
 public unsafe struct ButtonSet
 {
+    /// <summary>
+    /// Maximum number of buttons supported by this structure.
+    /// </summary>
     public const int NumberOfButtons = 256;
+
     private fixed bool _buttons[NumberOfButtons];
 
     /// <summary>
