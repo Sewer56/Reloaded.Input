@@ -3,7 +3,7 @@
 namespace Reloaded.Input.Structs;
 
 /// <summary/>
-public struct Mapping
+public class Mapping
 {
     /// <summary>
     /// The ID of the controller this mapping is assigned to.
@@ -14,6 +14,15 @@ public struct Mapping
     /// The index of <see cref="MappingType"/> the button was mapped to.
     /// </summary>
     public int Index { get; set; }
+
+    /// <summary>
+    /// Default constructor.
+    /// </summary>
+    public Mapping()
+    {
+        ControllerId = "";
+        Index = 0;
+    }
 
     /// <summary>
     /// Creates a mapping given a unique controller ID, mapping type and index.

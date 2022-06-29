@@ -18,6 +18,9 @@ public class MultiMapping
 
     private StringBuilder _builder = new StringBuilder();
 
+    // Serialization
+    public MultiMapping() { }
+
     /// <summary>
     /// Creates a Multimapping, which encapsulates multiple individual mappings.
     /// </summary>
@@ -27,12 +30,13 @@ public class MultiMapping
     {
         MappingType = mappingType;
         if (mapping != null)
-            Mappings[0] = mapping.Value;
+            Mappings[0] = mapping;
     }
 
     /// <summary>
     /// Gets a friendly name for the mapping.
     /// </summary>
+    /// <param name="controllerIdToController">A mapping between controller IDs and IController instances.</param>
     public string GetFriendlyName(Dictionary<string, IController> controllerIdToController)
     {
         var builder = new StringBuilder(100);
@@ -47,6 +51,19 @@ public class MultiMapping
         }
 
         return builder.ToString();
+    }
+
+    /// <summary>
+    /// Gets a friendly name for the mapping.
+    /// </summary>
+    /// <param name="controllerIdToController">A mapping between controller IDs and IController instances.</param>
+    /// <param name="mappingNo">Dictionary mapping of the index.</param>
+    public string GetFriendlyName(Dictionary<string, IController> controllerIdToController, int mappingNo)
+    {
+        if (Mappings.TryGetValue(mappingNo, out var mapping))
+            return mapping.GetFriendlyName(controllerIdToController, MappingType);
+
+        return "";
     }
 
     /// <summary>
