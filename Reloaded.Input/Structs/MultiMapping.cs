@@ -78,7 +78,7 @@ public class MultiMapping
         foreach (var mapping in Mappings.Values)
             value += mapping.GetAxis(controllerIdToController);
 
-        return value;
+        return Math.Clamp(value, AxisSet.MinValue, AxisSet.MaxValue);
     }
 
     /// <summary>
