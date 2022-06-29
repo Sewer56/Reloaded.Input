@@ -26,6 +26,7 @@ public class MappingSet
             Mappings[index] = value;
         }
 
+        value.MappingType = type;
         return value;
     }
 
