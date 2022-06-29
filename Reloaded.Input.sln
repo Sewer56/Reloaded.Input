@@ -1,13 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30104.148
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32611.2
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Input", "Reloaded.Input\Reloaded.Input.csproj", "{2CC548C5-C2BC-4B75-93D4-5020F6A46788}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Input.Configurator", "Reloaded.Input.Configurator\Reloaded.Input.Configurator.csproj", "{BB50EC39-3EF1-48AD-BBDC-F30348C0CC81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloaded.Input.Configurator.Test", "Reloaded.Input.Configurator.Test\Reloaded.Input.Configurator.Test.csproj", "{32DB2486-9B29-4240-9D77-CBCDF46E4FF7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Input.Configurator.Test", "Reloaded.Input.Configurator.Test\Reloaded.Input.Configurator.Test.csproj", "{32DB2486-9B29-4240-9D77-CBCDF46E4FF7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Trimming", "Trimming", "{796979AA-AF37-4614-B1C4-76DECC2F0A2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloaded.Input.Trimmer.Test", "Reloaded.Input.Trimmer.Test\Reloaded.Input.Trimmer.Test.csproj", "{0595AE0D-37FD-4F83-B262-13903EBDB240}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,9 +31,16 @@ Global
 		{32DB2486-9B29-4240-9D77-CBCDF46E4FF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32DB2486-9B29-4240-9D77-CBCDF46E4FF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32DB2486-9B29-4240-9D77-CBCDF46E4FF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0595AE0D-37FD-4F83-B262-13903EBDB240}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0595AE0D-37FD-4F83-B262-13903EBDB240}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0595AE0D-37FD-4F83-B262-13903EBDB240}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0595AE0D-37FD-4F83-B262-13903EBDB240}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0595AE0D-37FD-4F83-B262-13903EBDB240} = {796979AA-AF37-4614-B1C4-76DECC2F0A2D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C4F4CAAC-908B-4C78-A5F7-24473ED96947}

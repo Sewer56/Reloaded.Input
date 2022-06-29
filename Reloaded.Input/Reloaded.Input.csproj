@@ -19,6 +19,8 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <IsTrimable>true</IsTrimable>
+    <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
