@@ -14,7 +14,7 @@ public class MultiMapping
     /// <summary>
     /// The mapping type, axis or button.
     /// </summary>
-    public MappingType MappingType { get; private set; }
+    public MappingType MappingType { get; set; }
 
     private StringBuilder _builder = new StringBuilder();
 
