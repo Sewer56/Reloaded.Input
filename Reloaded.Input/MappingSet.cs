@@ -33,9 +33,26 @@ public class MappingSet
     /// <summary>
     /// Saves the mapping file to a given file path.
     /// </summary>
-    public void SaveTo(string filePath)
+    /// <param name="filePath">Path of where to save the file.</param>
+    /// <param name="cleanup">If true, cleans up the mapping set to prevent unused mappings from being written.</param>
+    public void SaveTo(string filePath, bool cleanup = true)
     {
+        if (cleanup)
+            Cleanup();
+
         File.WriteAllText(filePath, JsonSerializer.Serialize(this, _serializerSettings));
+    }
+
+    /// <summary>
+    /// Cleans up the mapping set to remove any empty mappings.
+    /// </summary>
+    public void Cleanup()
+    {
+        foreach (var mappingKey in Mappings.Keys.ToArray())
+        {
+            if (Mappings[mappingKey].Mappings.Count <= 0)
+                Mappings.Remove(mappingKey);
+        }
     }
 
     /// <summary>
