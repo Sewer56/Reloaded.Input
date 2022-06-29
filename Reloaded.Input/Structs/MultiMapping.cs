@@ -104,4 +104,27 @@ public class MultiMapping
     /// <param name="mapping">The individual mapping value.</param>
     /// <exception cref="System.NotImplementedException"></exception>
     public void SetMapping(int mappingNo, Mapping mapping) => Mappings[mappingNo] = mapping;
+
+    /// <summary>
+    /// Gets the next index in the dictionary that is not mapped.
+    /// i.e. Max Index + 1;
+    /// </summary>
+    public int? GetNextUnmappedIndex()
+    {
+        int? highestIndex = default;
+
+        foreach (var mapKey in Mappings.Keys)
+        {
+            if (highestIndex == null)
+            {
+                highestIndex = mapKey;
+                continue;
+            }
+
+            if (mapKey > highestIndex.Value)
+                highestIndex = mapKey;
+        }
+
+        return highestIndex + 1;
+    }
 }

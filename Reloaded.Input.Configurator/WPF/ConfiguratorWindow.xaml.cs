@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Reloaded.Input.Configurator.Model;
@@ -18,7 +20,13 @@ public partial class ConfiguratorWindow : ReloadedWindow
     {
         InitializeComponent();
         ViewModel = new MainWindowViewModel(input);
+
+        foreach (var config in ViewModel.Configurations)
+        foreach (var mapping in config.Mappings)
+            mapping.Slots.CollectionChanged += OnSlotsChanged;
+
         this.Closing += SaveOnExit;
+        this.MappingGrid.LoadingRow += LoadedRow;
     }
 
     private void SaveOnExit(object sender, CancelEventArgs e)
@@ -29,21 +37,56 @@ public partial class ConfiguratorWindow : ReloadedWindow
 
     private void OnRightclick(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
-        var mapping = GetMappingFromButton(sender);
+        var mappingSlot = GetMappingFromButton(sender);
         if (e.RightButton == MouseButtonState.Pressed)
-            mapping.UnMap();
+            mappingSlot.Parent.UnMap(mappingSlot.MappingNo);
     }
 
     private async void Click(object sender, System.Windows.RoutedEventArgs e)
     {
-        var mapping = GetMappingFromButton(sender);
-        await mapping.Map();
+        var mappingSlot = GetMappingFromButton(sender);
+        await mappingSlot.Parent.Map(mappingSlot.MappingNo);
     }
 
-    private static Mapping GetMappingFromButton(object sender)
+    private static MappingSlot GetMappingFromButton(object sender)
     {
         var senderBtn = (Button)sender;
-        var mapping = (Mapping)(senderBtn.DataContext);
+        var mapping = (MappingSlot)(senderBtn.DataContext);
         return mapping;
+    }
+
+    private void LoadedRow(object? sender, DataGridRowEventArgs e) => OnSlotsChanged(null, null);
+
+    private async void OnSlotsChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        // TODO: This is a terrible hack.
+        await Task.Delay(16);
+
+        // First reset all auto columns
+        foreach (var column in MappingGrid.Columns)
+        {
+            if (!column.Width.IsAuto)
+                continue;
+
+            column.Width = 0;
+            column.Width = DataGridLength.Auto;
+        }
+
+        try { MappingGrid.UpdateLayout(); }
+        catch (Exception) { }
+
+        // Then update all star columns
+        foreach (var column in MappingGrid.Columns)
+        {
+            if (!column.Width.IsStar)
+                continue;
+
+            var oldWidth = column.Width;
+            column.Width = 0;
+            column.Width = oldWidth;
+        }
+
+        try { MappingGrid.UpdateLayout(); }
+        catch (Exception) { }
     }
 }

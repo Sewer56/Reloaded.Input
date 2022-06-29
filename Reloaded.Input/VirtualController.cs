@@ -117,7 +117,7 @@ public class VirtualController : IDisposable
     /// </summary>
     /// <param name="mappingId">Unique ID for the mapping.</param>
     /// <param name="type">The type of mapping.</param>
-    /// <param name="mappingNo">The unique number . e.g. 0 for button 1, 1 for button 2 corresponding to same action.</param>
+    /// <param name="mappingNo">The unique number. e.g. 0 for button 1, 1 for button 2 corresponding to same action.</param>
     /// <param name="token">Allows for cancelling the mapping process.</param>
     /// <param name="callback">Executed after every poll attempt for a key or axis.</param>
     public async Task<bool> Map(int mappingId, MappingType type, int mappingNo, CancellationToken token = default, Action? callback = null)
@@ -200,23 +200,52 @@ public class VirtualController : IDisposable
     /// <summary>
     /// Gets a friendly name for a given mapping.
     /// </summary>
-    /// <param name="index">The index to test.</param>
-    public string GetFriendlyMappingName(int index)
+    /// <param name="mappingId">The index to test.</param>
+    public string GetFriendlyMappingName(int mappingId)
     {
-        if (!Mappings.Mappings.TryGetValue(index, out MultiMapping? value)) 
+        if (!Mappings.Mappings.TryGetValue(mappingId, out MultiMapping? value)) 
             return "Unmapped";
         
         return value.GetFriendlyName(Controllers);
     }
 
     /// <summary>
+    /// Gets a friendly name for a given mapping.
+    /// </summary>
+    /// <param name="mappingId">The index to test.</param>
+    /// <param name="mappingNo">The unique number. e.g. 0 for button 1, 1 for button 2 corresponding to same action.</param>
+    public string GetFriendlyMappingName(int mappingId, int mappingNo)
+    {
+        if (!Mappings.Mappings.TryGetValue(mappingId, out MultiMapping? value))
+            return "Unmapped";
+
+        return value.GetFriendlyName(Controllers, mappingNo);
+    }
+
+    /// <summary>
     /// Gets a mapping for a given index.
     /// </summary>
-    /// <param name="index">The index to test.</param>
-    public MultiMapping? GetMapping(int index)
+    /// <param name="mappingId">The index to test.</param>
+    public MultiMapping? GetMapping(int mappingId)
     {
-        if (Mappings.Mappings.TryGetValue(index, out MultiMapping? value))
+        if (Mappings.Mappings.TryGetValue(mappingId, out MultiMapping? value))
             return value;
+
+        return null;
+    }
+
+    /// <summary>
+    /// Gets a mapping for a given index.
+    /// </summary>
+    /// <param name="mappingId">The index to test.</param>
+    /// <param name="mappingNo">Number of the mapping for this index.</param>
+    public Mapping? GetMapping(int mappingId, int mappingNo)
+    {
+        if (!Mappings.Mappings.TryGetValue(mappingId, out MultiMapping? multiMapping))
+            return null;
+
+        if (multiMapping.Mappings.TryGetValue(mappingNo, out var mapping))
+            return mapping;
 
         return null;
     }
