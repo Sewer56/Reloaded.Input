@@ -82,9 +82,6 @@ public class DInputManager : IControllerManager, IDisposable
 
     private void DisposeControllers()
     {
-        if (Controllers == null) 
-            return;
-
         foreach (var controller in Controllers)
             ((DInputController) controller).Dispose();
     }

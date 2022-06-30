@@ -28,7 +28,11 @@ public class DInputController : IController, IDisposable
     }
 
     /// <inheritdoc />
-    public void Dispose() => Joystick?.Dispose();
+    public void Dispose()
+    {
+        Joystick.Unacquire();
+        Joystick.Dispose();
+    }
 
     /* Interface Implementation */
 
