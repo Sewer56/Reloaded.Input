@@ -13,6 +13,8 @@ public class Hotplugger : NativeWindow, IDisposable
     /// </summary>
     private DeviceNotification NotificationReceiver { get; set; }
 
+    private bool _disposed;
+
     /// <summary>
     /// Allows for receiving of device removal / addition events.
     /// </summary>
@@ -25,16 +27,25 @@ public class Hotplugger : NativeWindow, IDisposable
     }
 
     /// <summary/>
-    ~Hotplugger()
-    {
-        Dispose();
-    }
+    ~Hotplugger() => Dispose(false);
 
     /// <summary/>
     public void Dispose()
     {
-        NotificationReceiver?.Dispose();
+        Dispose(true);
         GC.SuppressFinalize(this);
+    }
+
+    /// <summary/>
+    protected virtual void Dispose(bool disposing)
+    {
+        if (_disposed)
+            return;
+
+        if (disposing)
+            NotificationReceiver?.Dispose();
+        
+        _disposed = true;
     }
 
     /// <summary>

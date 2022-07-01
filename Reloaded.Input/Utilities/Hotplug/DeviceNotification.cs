@@ -11,6 +11,7 @@ public class DeviceNotification : IDisposable
 {
     private readonly IntPtr _notificationHandle;
     private readonly IntPtr _buffer;
+    private bool _disposed = false;
 
     /// <param name="windowHandle">Handle to the window receiving notifications.</param>
     /// <param name="usbOnly">true to filter to USB devices only, false to be notified for all devices.</param>
@@ -35,16 +36,23 @@ public class DeviceNotification : IDisposable
     }
 
     /// <summary/>
-    ~DeviceNotification()
-    {
-        ReleaseUnmanagedResources();
-    }
+    ~DeviceNotification() => Dispose(false);
 
     /// <summary/>
     public void Dispose()
     {
-        ReleaseUnmanagedResources();
+        Dispose(true);
         GC.SuppressFinalize(this);
+    }
+
+    /// <summary/>
+    protected virtual void Dispose(bool disposing)
+    {
+        if (_disposed)
+            return;
+
+        ReleaseUnmanagedResources();
+        _disposed = true;
     }
 
     private void ReleaseUnmanagedResources()
