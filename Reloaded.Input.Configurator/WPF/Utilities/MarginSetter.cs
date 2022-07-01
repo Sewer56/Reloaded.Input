@@ -38,7 +38,7 @@ public class MarginSetter
         panel.SizeChanged += SizeChanged;
     }
 
-    private static void SizeChanged(object sender, SizeChangedEventArgs e) => SetMarginsOnPanelLoaded(sender, null);
+    private static void SizeChanged(object sender, SizeChangedEventArgs e) => SetMarginsOnPanelLoaded(sender, null!);
 
     private static void MarginChanged(object sender, DependencyPropertyChangedEventArgs e)
     {
@@ -48,7 +48,7 @@ public class MarginSetter
             return;
         
         if (panel.IsLoaded)
-            SetMarginsOnPanelLoaded(panel, null);
+            SetMarginsOnPanelLoaded(panel, null!);
     }
 
     private static void SetMarginsOnPanelLoaded(object sender, RoutedEventArgs e)

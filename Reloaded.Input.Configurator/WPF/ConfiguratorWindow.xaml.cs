@@ -66,7 +66,7 @@ public partial class ConfiguratorWindow : ReloadedWindow
             ToolTipService.SetInitialShowDelay(e.Row, 0);
         }
 
-        OnSlotsChanged(null, null);
+        OnSlotsChanged(null, null!);
     }
 
     private async void OnSlotsChanged(object? sender, NotifyCollectionChangedEventArgs e)

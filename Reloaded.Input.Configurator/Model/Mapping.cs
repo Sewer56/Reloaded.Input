@@ -85,7 +85,7 @@ public class Mapping : ObservableObject
 
         // Mapping No might not correspond to array index depending on remove order.
         var slot = Slots.FirstOrDefault(x => x.MappingNo == mappingNo);
-        Slots.Remove(slot);
+        Slots.Remove(slot!);
 
         // Just so we're not left with 0.
         CreateDefaultOrDummyIfNecessary();
@@ -113,7 +113,7 @@ public class MappingSlot : ObservableObject
 {
     public Mapping Parent { get; set; }
     public int MappingNo { get; set; }
-    public string MappingText { get; set; }
+    public string MappingText { get; set; } = null!;
     public bool IsInverted { get; set; }
 
     /// <summary>

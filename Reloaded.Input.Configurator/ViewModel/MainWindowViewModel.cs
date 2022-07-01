@@ -8,7 +8,7 @@ namespace Reloaded.Input.Configurator.ViewModel;
 public class MainWindowViewModel : ObservableObject
 {
     public ObservableCollection<Configuration> Configurations { get; set; } = new ObservableCollection<Configuration>();
-    public Configuration SelectedConfiguration { get; set; } = null;
+    public Configuration SelectedConfiguration { get; set; } = null!;
     private Task UpdateValuesTask { get; set; }
     private CancellationTokenSource CancelTask { get; set; }
 
