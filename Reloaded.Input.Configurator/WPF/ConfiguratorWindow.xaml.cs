@@ -35,11 +35,13 @@ public partial class ConfiguratorWindow : ReloadedWindow
         ViewModel.Close();
     }
 
-    private void OnRightclick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    private void OnOtherClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
         var mappingSlot = GetMappingFromButton(sender);
         if (e.RightButton == MouseButtonState.Pressed)
             mappingSlot.Parent.UnMap(mappingSlot.MappingNo);
+        if (e.MiddleButton == MouseButtonState.Pressed)
+            mappingSlot.ToggleInverted();
     }
 
     private async void Click(object sender, System.Windows.RoutedEventArgs e)

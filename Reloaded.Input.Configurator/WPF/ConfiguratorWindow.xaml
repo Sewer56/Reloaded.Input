@@ -11,6 +11,20 @@
                         Width="800"
                         MaxHeight="800"
                         SizeToContent="Height">
+    <default:ReloadedWindow.Resources>
+        <!-- Add some custom button behaviour on invert -->
+        <Style x:Key="BindingButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+
+            <!-- There is probably a better way that doesn't intervene with end users' styles, but for now, we have this. -->
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsInverted}" Value="True">
+                    <Setter Property="Opacity" Value="0.66" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </default:ReloadedWindow.Resources>
     <ScrollViewer DataContext="{Binding ViewModel, RelativeSource={RelativeSource AncestorType=Window}}">
         <StackPanel>
             <ComboBox ItemsSource="{Binding Configurations}"
@@ -53,16 +67,18 @@
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <!-- Bind to self. -->
-                                            <Button Content="{Binding MappingText, UpdateSourceTrigger=PropertyChanged}" 
+                                            <Button x:Name="BindingBtn"
+                                                    Content="{Binding MappingText, UpdateSourceTrigger=PropertyChanged}" 
                                                     DataContext="{Binding}" 
                                                     Height="30" Padding="10,0,10,0" 
                                                     VerticalAlignment="Center" 
                                                     HorizontalAlignment="Center"
                                                     Click="Click"
-                                                    PreviewMouseDown="OnRightclick"
+                                                    PreviewMouseDown="OnOtherClick"
                                                     IsEnabled="{Binding Parent.IsNotBinding}"
-                                                    ToolTip="Right click clears the mapping!"
-                                                    ToolTipService.InitialShowDelay="0"/>
+                                                    ToolTip="Left click assigns a new binding.&#x0a;Middle click inverts the value.&#x0a;Right click clears the mapping!&#x0a;! indicates the value is inverted."
+                                                    ToolTipService.InitialShowDelay="0"
+                                                    Style="{DynamicResource BindingButton}"/>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>

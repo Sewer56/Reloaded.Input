@@ -33,7 +33,7 @@ public class Mapping : ObservableObject
         Slots = new ObservableCollection<MappingSlot>();
         foreach (var mappingsMapping in source.Mappings.GetOrCreateMapping(MappingId, type).Mappings)
         {
-            Slots.Add(new MappingSlot(this, mappingsMapping.Key));
+            Slots.Add(new MappingSlot(this, mappingsMapping.Key, mappingsMapping.Value.Inverted));
         }
 
         // If there are no items, make a dummy.
@@ -114,6 +114,7 @@ public class MappingSlot : ObservableObject
     public Mapping Parent { get; set; }
     public int MappingNo { get; set; }
     public string MappingText { get; set; }
+    public bool IsInverted { get; set; }
 
     /// <summary>
     /// Constructor for a dummy mapping slot that isn't backed by an actual mapping.
@@ -128,10 +129,11 @@ public class MappingSlot : ObservableObject
     /// <summary>
     /// Constructor for a non-dummy mapping slot with a known mapping no.
     /// </summary>
-    public MappingSlot(Mapping parent, int mappingNo)
+    public MappingSlot(Mapping parent, int mappingNo, bool valueInverted)
     {
         Parent = parent;
         MappingNo = mappingNo;
+        IsInverted = valueInverted;
         UpdateMappingText();
     }
 
@@ -145,5 +147,15 @@ public class MappingSlot : ObservableObject
     {
         var source = Parent.Source;
         return source.GetMapping(Parent.MappingId, MappingNo) != null;
+    }
+
+    public void ToggleInverted()
+    {
+        IsInverted = !IsInverted;
+        var map = Parent.Source.GetMapping(Parent.MappingId, MappingNo);
+        if (map != null)
+            map.Inverted = IsInverted;
+
+        UpdateMappingText();
     }
 }
