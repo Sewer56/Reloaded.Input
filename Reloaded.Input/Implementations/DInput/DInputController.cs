@@ -109,6 +109,12 @@ public class DInputController : IController, IDisposable
     /// <inheritdoc />
     public AxisSet GetAxis() => _axis;
 
+    /// <inheritdoc />
+    public string GetFriendlyButtonName(int index) => $"B{index}";
+
+    /// <inheritdoc />
+    public string GetFriendlyAxisName(int index) => $"A{index}";
+
     private void ExceptionHandler(SharpGenException ex)
     {
         if (ex.ResultCode == ResultCode.NotAcquired || ex.ResultCode == ResultCode.InputLost)

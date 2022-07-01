@@ -31,4 +31,16 @@ public interface IController
     /// Retrieves all of the controller axis.
     /// </summary>
     AxisSet GetAxis ();
+
+    /// <summary>
+    /// Gets a friendly name for the button.
+    /// </summary>
+    /// <param name="index">The index of the button.</param>
+    string GetFriendlyButtonName(int index);
+
+    /// <summary>
+    /// Gets a friendly name for the axis.
+    /// </summary>
+    /// <param name="index">The index of the axis.</param>
+    string GetFriendlyAxisName(int index);
 }

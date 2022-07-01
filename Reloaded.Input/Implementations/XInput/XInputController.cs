@@ -8,7 +8,8 @@ namespace Reloaded.Input.Implementations.XInput;
 public class XInputController : IController
 {
     private static readonly GamepadButtons[] _allButtons = Enum.GetValues<GamepadButtons>();
-
+    private static readonly string[] _buttonNames = Enum.GetNames<GamepadButtons>();
+    
     /// <summary/>
     public int ControllerIndex { get; set; }
 
@@ -48,6 +49,24 @@ public class XInputController : IController
 
     /// <inheritdoc />
     public AxisSet GetAxis() => _axis;
+
+    /// <inheritdoc />
+    public string GetFriendlyButtonName(int index) => _buttonNames[index];
+
+    /// <inheritdoc />
+    public string GetFriendlyAxisName(int index)
+    {
+        return index switch
+        {
+            0 => "Left Stick X",
+            1 => "Left Stick Y",
+            2 => "Right Stick X",
+            3 => "Right Stick Y",
+            4 => "Left Trigger",
+            5 => "Right Trigger",
+            _ => "Unknown"
+        };
+    }
 
     /// <inheritdoc />
     public string GetId() => GetFriendlyName();

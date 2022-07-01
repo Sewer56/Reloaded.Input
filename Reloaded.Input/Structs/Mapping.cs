@@ -44,9 +44,9 @@ public class Mapping
             return "";
 
         if (type == MappingType.Button)
-            return $"{controller.GetFriendlyName()}/B{Index}";
+            return $"{controller.GetFriendlyName()}/{controller.GetFriendlyButtonName(Index)}";
 
-        return $"{controller.GetFriendlyName()}/A{Index}";
+        return $"{controller.GetFriendlyName()}/{controller.GetFriendlyAxisName(Index)}";
     }
 
     /// <summary>

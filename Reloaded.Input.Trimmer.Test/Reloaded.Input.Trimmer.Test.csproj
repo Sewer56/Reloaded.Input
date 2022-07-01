@@ -9,7 +9,6 @@
     <PublishTrimmed>true</PublishTrimmed>
     <TrimMode>link</TrimMode>
     <TrimmerDefaultAction>link</TrimmerDefaultAction>
-    <SelfContained>true</SelfContained>
   </PropertyGroup>
 
   <ItemGroup>
