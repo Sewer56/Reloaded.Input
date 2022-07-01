@@ -15,7 +15,7 @@ public class Configuration : ObservableObject
         Controller = new VirtualController(input.ConfigurationPath);
         foreach (var entry in input.Entries)
         {
-            Mappings.Add(new Mapping(Controller, entry.Name, entry.MappingIndex, entry.Type));
+            Mappings.Add(new Mapping(Controller, entry.Name, entry.MappingIndex, entry.Type, entry.Description));
         }
     }
 }

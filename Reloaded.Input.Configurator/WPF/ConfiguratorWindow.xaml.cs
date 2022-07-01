@@ -55,7 +55,17 @@ public partial class ConfiguratorWindow : ReloadedWindow
         return mapping;
     }
 
-    private void LoadedRow(object? sender, DataGridRowEventArgs e) => OnSlotsChanged(null, null);
+    private void LoadedRow(object? sender, DataGridRowEventArgs e)
+    {
+        var description = ViewModel.SelectedConfiguration.Mappings[e.Row.GetIndex()].Description;
+        if (!string.IsNullOrEmpty(description))
+        {
+            e.Row.ToolTip = description;
+            ToolTipService.SetInitialShowDelay(e.Row, 0);
+        }
+
+        OnSlotsChanged(null, null);
+    }
 
     private async void OnSlotsChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {

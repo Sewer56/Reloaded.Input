@@ -45,7 +45,8 @@
                                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" 
                                                         IsItemsHost="True"
                                                         utilities:MarginSetter.Enable="True"
-                                                        utilities:MarginSetter.Margin="0 0 10 0" utilities:MarginSetter.LastItemMargin="0"/>
+                                                        utilities:MarginSetter.Margin="0 0 10 0" utilities:MarginSetter.LastItemMargin="0"
+                                            />
                                         </ItemsPanelTemplate>
                                     </ItemsControl.ItemsPanel>
 

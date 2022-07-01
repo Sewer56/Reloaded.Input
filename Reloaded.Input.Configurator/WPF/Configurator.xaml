@@ -7,6 +7,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <!-- This dictionary switches locations between design and runtime -->
                 <controls:DesignTimeResourceDictionary RunTimeSource="pack://siteoforigin:,,,/Theme/Default/Root.xaml" DesignTimeSource="pack://application:,,,/Theme/Default/Root.xaml"/>
+                <ResourceDictionary Source="/Reloaded.Input.Configurator;component/WPF/Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

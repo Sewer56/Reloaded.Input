@@ -20,13 +20,15 @@ public class Mapping : ObservableObject
     public MappingType Type             { get; private set; }
     public bool IsNotBinding            { get; private set; } = true;
     public string CurrentValue          { get; private set; } = "";
+    public string Description           { get; private set; }
         
-    public Mapping(VirtualController source, string name, int mappingId, MappingType type)
+    public Mapping(VirtualController source, string name, int mappingId, MappingType type, string description)
     {
         Source = source;
         Name = name;
         MappingId = mappingId;
         Type = type;
+        Description = description;
 
         Slots = new ObservableCollection<MappingSlot>();
         foreach (var mappingsMapping in source.Mappings.GetOrCreateMapping(MappingId, type).Mappings)

@@ -11,12 +11,12 @@ class Program
     {
         var mappingEntries = new MappingEntry[]
         {
-            new("Jump", 0, MappingType.Button),
-            new("Boost", 1, MappingType.Button),
-            new("Drift", 2, MappingType.Button),
+            new("Jump", 0, MappingType.Button, "Performs a jump"),
+            new("Boost", 1, MappingType.Button, "Goes wheeeee"),
+            new("Drift", 2, MappingType.Button, "Turnnnnn"),
 
-            new("Up/Down", 3, MappingType.Axis),
-            new("Left/Right", 4, MappingType.Axis),
+            new("Up/Down", 3, MappingType.Axis, "And all around!"),
+            new("Left/Right", 4, MappingType.Axis, "Something never used by drag racers"),
         };
 
         var configurator = new WPF.Configurator();

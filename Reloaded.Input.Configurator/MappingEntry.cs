@@ -9,13 +9,15 @@ namespace Reloaded.Input.Configurator;
 public class MappingEntry : ObservableObject
 {
     public string Name                  { get; private set; }
+    public string Description           { get; private set; }
     public int MappingIndex             { get; private set; }
     public MappingType Type             { get; private set; }
 
-    public MappingEntry(string name, int mappingIndex, MappingType type)
+    public MappingEntry(string name, int mappingIndex, MappingType type, string description = "")
     {
         Name = name;
         MappingIndex = mappingIndex;
         Type = type;
+        Description = description;
     }
 }
