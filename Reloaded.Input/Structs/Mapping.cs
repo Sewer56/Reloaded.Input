@@ -1,4 +1,5 @@
-﻿using Reloaded.Input.Interfaces;
+﻿using System.Runtime.CompilerServices;
+using Reloaded.Input.Interfaces;
 
 namespace Reloaded.Input.Structs;
 
@@ -16,12 +17,19 @@ public class Mapping
     public int Index { get; set; }
 
     /// <summary>
+    /// Inverts the values returned by the controller.
+    /// </summary>
+    public bool Inverted { get; set; }
+    internal int InvertedAsNumber => Inverted ? -1 : 1;
+
+    /// <summary>
     /// Default constructor.
     /// </summary>
     public Mapping()
     {
         ControllerId = "";
         Index = 0;
+        Inverted = false;
     }
 
     /// <summary>
@@ -43,10 +51,12 @@ public class Mapping
         if (!controllerIdToController.TryGetValue(ControllerId, out var controller))
             return "";
 
-        if (type == MappingType.Button)
-            return $"{controller.GetFriendlyName()}/{controller.GetFriendlyButtonName(Index)}";
-
-        return $"{controller.GetFriendlyName()}/{controller.GetFriendlyAxisName(Index)}";
+        var name = GetFriendlyMappingName_Internal(type, controller);
+        return Inverted switch
+        {
+            true => $"! {name}",
+            _ => name
+        };
     }
 
     /// <summary>
@@ -57,7 +67,7 @@ public class Mapping
         if (!controllerIdToController.TryGetValue(ControllerId, out var controller))
             return 0.0f;
 
-        return controller.GetAxis().GetAxis(Index);
+        return controller.GetAxis().GetAxis(Index) * InvertedAsNumber;
     }
 
     /// <summary>
@@ -68,7 +78,16 @@ public class Mapping
         if (!controllerIdToController.TryGetValue(ControllerId, out var controller))
             return false;
 
-        return controller.GetButtons().GetButton(Index);
+        var result = controller.GetButtons().GetButton(Index);
+        return Inverted ? !result : result;
+    }
+
+    private string GetFriendlyMappingName_Internal(MappingType type, IController controller)
+    {
+        if (type == MappingType.Button)
+            return $"{controller.GetFriendlyName()}/{controller.GetFriendlyButtonName(Index)}";
+
+        return $"{controller.GetFriendlyName()}/{controller.GetFriendlyAxisName(Index)}";
     }
 }
 
