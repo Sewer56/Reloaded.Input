@@ -4,6 +4,10 @@
 	<br/> <br/>
 	<strong><i>A simple input mapper for input mods.</i></strong>
 	<br/> <br/>
+	<!-- NuGet -->
+	<a href="https://www.nuget.org/packages/Reloaded.Input">
+		<img src="https://img.shields.io/nuget/v/Reloaded.Input.svg" alt="NuGet" />
+	</a>
 </div>
 
 # Reloaded.Input
