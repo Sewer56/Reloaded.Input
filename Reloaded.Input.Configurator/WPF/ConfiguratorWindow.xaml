@@ -6,6 +6,7 @@
                         xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
                         xmlns:utilities="clr-namespace:Reloaded.Input.Configurator.WPF.Utilities"
                         xmlns:localization="clr-namespace:Reloaded.Input.Configurator.Localization"
+                        xmlns:converter="clr-namespace:Reloaded.Input.Configurator.WPF.Converter"
                         mc:Ignorable="d"
                         Style="{DynamicResource ReloadedWindow}"
                         Title="Reloaded.Input Configurator" 
@@ -31,6 +32,7 @@
             <ComboBox ItemsSource="{Binding Configurations}"
                       IsSynchronizedWithCurrentItem="True"
                       SelectedItem="{Binding SelectedConfiguration, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Visibility="{Binding Configurations, Converter={x:Static converter:ConfigurationsToVisibilityConverter.Instance}}"
                       DisplayMemberPath="ConfigurationName"
                       Margin="10" />
 
