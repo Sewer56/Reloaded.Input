@@ -10,7 +10,7 @@ public interface ILocalizationProvider
     /// </summary>
     /// <param name="button">The button to get name for.</param>
     /// <returns>The name, or null if not available.</returns>
-    public string? GetText(CustomStrings button);
+    public string? GetText(CustomStrings button) => null;
 }
 
 /// <summary>
