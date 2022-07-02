@@ -5,6 +5,7 @@
                         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                         xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
                         xmlns:utilities="clr-namespace:Reloaded.Input.Configurator.WPF.Utilities"
+                        xmlns:localization="clr-namespace:Reloaded.Input.Configurator.Localization"
                         mc:Ignorable="d"
                         Style="{DynamicResource ReloadedWindow}"
                         Title="Reloaded.Input Configurator" 
@@ -76,7 +77,7 @@
                                                     Click="Click"
                                                     PreviewMouseDown="OnOtherClick"
                                                     IsEnabled="{Binding Parent.IsNotBinding}"
-                                                    ToolTip="Left click assigns a new binding.&#x0a;Middle click inverts the value.&#x0a;Right click clears the mapping!&#x0a;! indicates the value is inverted."
+                                                    ToolTip="{x:Static localization:LocalizedStrings.BindButtonTooltip}"
                                                     ToolTipService.InitialShowDelay="0"
                                                     Style="{DynamicResource BindingButton}"/>
                                         </DataTemplate>

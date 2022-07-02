@@ -1,8 +1,8 @@
 ﻿using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Reloaded.Input.Configurator.Localization;
 using Reloaded.Input.Configurator.Model;
 using Reloaded.Input.Configurator.ViewModel;
 using Reloaded.WPF.Theme.Default;
@@ -16,11 +16,12 @@ public partial class ConfiguratorWindow : ReloadedWindow
 {
     public new MainWindowViewModel ViewModel { get; set; }
 
-    public ConfiguratorWindow(ConfiguratorInput[] input)
+    public ConfiguratorWindow(ConfiguratorInput[] input, ILocalizationProvider? localizationProvider = null)
     {
+        LocalizedStrings.Init(localizationProvider);
+
         InitializeComponent();
         ViewModel = new MainWindowViewModel(input);
-
         foreach (var config in ViewModel.Configurations)
         foreach (var mapping in config.Mappings)
             mapping.Slots.CollectionChanged += OnSlotsChanged;

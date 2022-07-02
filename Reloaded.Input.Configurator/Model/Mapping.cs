@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
+using Reloaded.Input.Configurator.Localization;
 using Reloaded.Input.Structs;
 using Reloaded.WPF.MVVM;
 using Vortice;
@@ -75,7 +76,7 @@ public class Mapping : ObservableObject
             if (stopWatch.ElapsedMilliseconds > TimeToMap)
                 cts.Cancel();
 
-            CurrentValue = $"Timeout: {TimeToMap - stopWatch.ElapsedMilliseconds}";
+            CurrentValue = $"{LocalizedStrings.Timeout}: {TimeToMap - stopWatch.ElapsedMilliseconds}";
         }
     }
 
@@ -140,7 +141,7 @@ public class MappingSlot : ObservableObject
     public void UpdateMappingText()
     {
         var text = Parent.Source.GetFriendlyMappingName(Parent.MappingId, MappingNo);
-        MappingText = !String.IsNullOrEmpty(text) ? text : "New";
+        MappingText = !String.IsNullOrEmpty(text) ? text : LocalizedStrings.New;
     }
 
     public bool IsValidMapping()
