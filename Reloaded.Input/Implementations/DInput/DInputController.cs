@@ -19,12 +19,14 @@ public class DInputController : IController, IDisposable
 
     private ButtonSet _buttons;
     private AxisSet _axis;
+    private JoystickState _state;
 
     /// <summary/>
     public DInputController(IDirectInputDevice8 controller, string friendlyName)
     {
         Joystick = controller;
         FriendlyName = friendlyName;
+        _state = new JoystickState();
     }
 
     /// <inheritdoc />
@@ -41,20 +43,20 @@ public class DInputController : IController, IDisposable
         try
         {
             Joystick.Poll();
-            var state = Joystick.GetCurrentJoystickState();
+            Joystick.GetCurrentJoystickState(ref _state);
 
             // Buttons
             _buttons = new ButtonSet();
 
             int currentButtonIndex = 0;
-            foreach (var button in state.Buttons)
+            foreach (var button in _state.Buttons)
             {
                 _buttons.SetButton(currentButtonIndex, button);
                 currentButtonIndex += 1;
             }
 
             // Buttons: DPad
-            foreach (var povController in state.PointOfViewControllers)
+            foreach (var povController in _state.PointOfViewControllers)
             {
                 foreach (var direction in _directions)
                 {
@@ -67,34 +69,34 @@ public class DInputController : IController, IDisposable
             int currentAxisIndex = 0;
             _axis = new AxisSet();
 
-            AddAxisFromArray(ref _axis, ref currentAxisIndex, state.AccelerationSliders);
-            AddAxisFromArray(ref _axis, ref currentAxisIndex, state.ForceSliders);
-            AddAxisFromArray(ref _axis, ref currentAxisIndex, state.Sliders);
-            AddAxisFromArray(ref _axis, ref currentAxisIndex, state.VelocitySliders);
-            AddAxis(ref _axis, ref currentAxisIndex, state.X);
-            AddAxis(ref _axis, ref currentAxisIndex, state.Y);
-            AddAxis(ref _axis, ref currentAxisIndex, state.Z);
-            AddAxis(ref _axis, ref currentAxisIndex, state.RotationX);
-            AddAxis(ref _axis, ref currentAxisIndex, state.RotationY);
-            AddAxis(ref _axis, ref currentAxisIndex, state.RotationZ);
-            AddAxis(ref _axis, ref currentAxisIndex, state.VelocityX);
-            AddAxis(ref _axis, ref currentAxisIndex, state.VelocityY);
-            AddAxis(ref _axis, ref currentAxisIndex, state.VelocityZ);
-            AddAxis(ref _axis, ref currentAxisIndex, state.AngularVelocityX);
-            AddAxis(ref _axis, ref currentAxisIndex, state.AngularVelocityY);
-            AddAxis(ref _axis, ref currentAxisIndex, state.AngularVelocityZ);
-            AddAxis(ref _axis, ref currentAxisIndex, state.AccelerationX);
-            AddAxis(ref _axis, ref currentAxisIndex, state.AccelerationY);
-            AddAxis(ref _axis, ref currentAxisIndex, state.AccelerationZ);
-            AddAxis(ref _axis, ref currentAxisIndex, state.AngularAccelerationX);
-            AddAxis(ref _axis, ref currentAxisIndex, state.AngularAccelerationY);
-            AddAxis(ref _axis, ref currentAxisIndex, state.AngularAccelerationZ);
-            AddAxis(ref _axis, ref currentAxisIndex, state.ForceX);
-            AddAxis(ref _axis, ref currentAxisIndex, state.ForceY);
-            AddAxis(ref _axis, ref currentAxisIndex, state.ForceZ);
-            AddAxis(ref _axis, ref currentAxisIndex, state.TorqueX);
-            AddAxis(ref _axis, ref currentAxisIndex, state.TorqueY);
-            AddAxis(ref _axis, ref currentAxisIndex, state.TorqueZ);
+            AddAxisFromArray(ref _axis, ref currentAxisIndex, _state.AccelerationSliders);
+            AddAxisFromArray(ref _axis, ref currentAxisIndex, _state.ForceSliders);
+            AddAxisFromArray(ref _axis, ref currentAxisIndex, _state.Sliders);
+            AddAxisFromArray(ref _axis, ref currentAxisIndex, _state.VelocitySliders);
+            AddAxis(ref _axis, ref currentAxisIndex, _state.X);
+            AddAxis(ref _axis, ref currentAxisIndex, _state.Y);
+            AddAxis(ref _axis, ref currentAxisIndex, _state.Z);
+            AddAxis(ref _axis, ref currentAxisIndex, _state.RotationX);
+            AddAxis(ref _axis, ref currentAxisIndex, _state.RotationY);
+            AddAxis(ref _axis, ref currentAxisIndex, _state.RotationZ);
+            AddAxis(ref _axis, ref currentAxisIndex, _state.VelocityX);
+            AddAxis(ref _axis, ref currentAxisIndex, _state.VelocityY);
+            AddAxis(ref _axis, ref currentAxisIndex, _state.VelocityZ);
+            AddAxis(ref _axis, ref currentAxisIndex, _state.AngularVelocityX);
+            AddAxis(ref _axis, ref currentAxisIndex, _state.AngularVelocityY);
+            AddAxis(ref _axis, ref currentAxisIndex, _state.AngularVelocityZ);
+            AddAxis(ref _axis, ref currentAxisIndex, _state.AccelerationX);
+            AddAxis(ref _axis, ref currentAxisIndex, _state.AccelerationY);
+            AddAxis(ref _axis, ref currentAxisIndex, _state.AccelerationZ);
+            AddAxis(ref _axis, ref currentAxisIndex, _state.AngularAccelerationX);
+            AddAxis(ref _axis, ref currentAxisIndex, _state.AngularAccelerationY);
+            AddAxis(ref _axis, ref currentAxisIndex, _state.AngularAccelerationZ);
+            AddAxis(ref _axis, ref currentAxisIndex, _state.ForceX);
+            AddAxis(ref _axis, ref currentAxisIndex, _state.ForceY);
+            AddAxis(ref _axis, ref currentAxisIndex, _state.ForceZ);
+            AddAxis(ref _axis, ref currentAxisIndex, _state.TorqueX);
+            AddAxis(ref _axis, ref currentAxisIndex, _state.TorqueY);
+            AddAxis(ref _axis, ref currentAxisIndex, _state.TorqueZ);
         }
         catch (SharpGenException e)
         {
