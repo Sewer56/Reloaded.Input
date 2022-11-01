@@ -25,7 +25,7 @@ Basic usage of the library is as follows:
 **Instantiation**
 
 ```csharp
-// Create a controller which
+// Create a controller
 var Controller = new VirtualController("Controller.json");
 ```
 
@@ -50,6 +50,8 @@ The idea is that every single input mapping, whether it is an axis or button is 
 Use the same mapping index as the original mapping was made with to get the input for a given controller.
 
 ```csharp
+// Poll controller before grabbing input(s).
+Source.PollAll();
 var button = Source.GetButton(mappingIndex);
 var axis   = Source.GetAxis(mappingIndex);
 ```
