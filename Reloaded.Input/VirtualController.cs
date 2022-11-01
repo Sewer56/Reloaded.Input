@@ -38,11 +38,17 @@ public class VirtualController : IDisposable
     /// </summary>
     public Dictionary<string, IController> Controllers { get; private set; } = new();
 
+    /// <summary>
+    /// The implementations with which this virtual controller was made with.
+    /// </summary>
+    public Implementations.Implementations Implementations { get; private set; }
+
     /// <summary/>
     public VirtualController(string filePath, Implementations.Implementations implementations = DInput | XInput)
     {
         FilePath = filePath;
         Mappings = MappingSet.ReadOrCreateFrom(filePath);
+        Implementations = implementations;
 
         var managers = new List<IControllerManager>();
         if ((implementations & DInput) == DInput)
