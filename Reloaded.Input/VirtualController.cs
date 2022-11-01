@@ -2,6 +2,7 @@
 using Reloaded.Input.Implementations.XInput;
 using Reloaded.Input.Interfaces;
 using Reloaded.Input.Structs;
+using static Reloaded.Input.Implementations.Implementations;
 
 namespace Reloaded.Input;
 
@@ -38,17 +39,23 @@ public class VirtualController : IDisposable
     public Dictionary<string, IController> Controllers { get; private set; } = new();
 
     /// <summary/>
-    public VirtualController(string filePath)
+    public VirtualController(string filePath, Implementations.Implementations implementations = DInput | XInput)
     {
         FilePath = filePath;
         Mappings = MappingSet.ReadOrCreateFrom(filePath);
-        Managers = new IControllerManager[]
-        {
-            new XInputManager(this),
-            new DInputManager(this) 
-        };
+
+        var managers = new List<IControllerManager>();
+        if ((implementations & DInput) == DInput)
+            managers.Add(new DInputManager(this));
+        else if ((implementations & XInput) == XInput)
+            managers.Add(new XInputManager(this));
+
+        Managers = managers.ToArray();
         Refresh();
     }
+    
+    /// <summary/>
+    public VirtualController(string filePath) : this(filePath, XInput | DInput) { }
 
     /// <inheritdoc />
     public void Dispose()
