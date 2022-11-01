@@ -47,7 +47,7 @@ public class VirtualController : IDisposable
         var managers = new List<IControllerManager>();
         if ((implementations & DInput) == DInput)
             managers.Add(new DInputManager(this));
-        else if ((implementations & XInput) == XInput)
+        if ((implementations & XInput) == XInput)
             managers.Add(new XInputManager(this));
 
         Managers = managers.ToArray();
